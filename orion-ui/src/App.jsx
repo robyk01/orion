@@ -2,7 +2,8 @@ import './App.css'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera, Stars } from '@react-three/drei'
 import ShipModel from './features/ShipModel'
-import VerticalData from './components/VerticalData'
+import Navigation from './components/Navigation'
+import LifeSupport from './components/LifeSupport'
 
 function App() {
 
@@ -42,14 +43,28 @@ function App() {
         </Canvas>
       </div>
 
-      <div className="grid grid-cols-12 grid-rows-12 h-screen w-full p-4 gap-4 z-10 relative">
-        <div className="col-span-3 row-span-2 border-l border-t border-orion-neon/30 p-2">
-          <h2 className="font-orbitron text-xs text-orion-neon uppercase">
+      <div className="grid grid-cols-12 grid-rows-12 h-screen w-full p-4 gap-4 justify-between z-10 relative pointer-events-none">
+        <div className="bg-orion-void/5 backdrop-blur-sm col-span-2 row-span-3 border-l border-t border-orion-purple p-2">
+          <h2 className="font-orbitron text-xs text-orion-purple uppercase">
             Navigation
           </h2>
-          <VerticalData />
+          <Navigation />
         </div>
+
+        <div className="bg-orion-void/5 backdrop-blur-sm col-start-11 col-span-2 row-span-7 border-r border-t border-orion-purple p-2 text-center">
+          <h2 className="font-orbitron text-xs text-orion-purple uppercase">
+            Life Support
+          </h2>
+          <div className="flex flex-col gap-4 p-4">
+            <LifeSupport label="Oxygen" percent={98} unit="%" />
+            <LifeSupport label="CO2 Concentration" percent={15} unit="ppm" />
+            <LifeSupport label="Cabin Pressure" percent={101} unit="kPa" />
+          </div>
+        </div>
+
       </div>
+
+
     </div>
   )
 }
