@@ -1,34 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { Canvas } from '@react-three/fiber'
+import { OrbitControls, PerspectiveCamera, Stars } from '@react-three/drei'
+import ShipModel from './features/ShipModel'
+import VerticalData from './components/VerticalData'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="relative w-full h-screen text-white overflow-hidden">
+      <div className="scanline" />
+
+      <div className="absolute inset-0 z-0">
+        <Canvas>
+          <color attach="background" args={['#050505']} />
+          <ambientLight intensity={0.4} />
+          <pointLight position={[10, 10, 10]} />
+
+          <Stars 
+            radius={100}
+            depth={50}
+            factor={4}
+            saturation={1}
+            fade
+          />
+
+          <PerspectiveCamera 
+            makeDefault 
+            position={[0, 0, 20]} 
+            fov={45} 
+            near={0.1} 
+            far={1000} 
+          />
+
+          <ShipModel />
+
+          <OrbitControls 
+            enablePan={false}
+            autoRotate={true} 
+            autoRotateSpeed={0.5} 
+          />
+        </Canvas>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+
+      <div className="grid grid-cols-12 grid-rows-12 h-screen w-full p-4 gap-4 z-10 relative">
+        <div className="col-span-3 row-span-2 border-l border-t border-orion-neon/30 p-2">
+          <h2 className="font-orbitron text-xs text-orion-neon uppercase">
+            Navigation
+          </h2>
+          <VerticalData />
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 

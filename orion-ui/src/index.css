@@ -1,11 +1,15 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Oxanium', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #050505;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -24,8 +28,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -66,3 +68,22 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* .scanline {
+  position: fixed;
+  inset: 0;
+  pointer-events: none; 
+  z-index: 50;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(234, 51, 194, 0.1) 51%
+  );
+  background-size: 100% 4px;
+  animation: scroll 10s linear infinite;
+}
+
+@keyframes scroll {
+  from { background-position: 0 0; }
+  to { background-position: 0 100%; }
+} */
