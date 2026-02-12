@@ -4,6 +4,9 @@ import { OrbitControls, PerspectiveCamera, Stars } from '@react-three/drei'
 import ShipModel from './features/ShipModel'
 import Navigation from './components/Navigation'
 import LifeSupport from './components/LifeSupport'
+import Terminal from './components/Terminal'
+import Menu from './components/Menu'
+import HealthBar from './components/HealthBar'
 
 function App() {
 
@@ -55,7 +58,7 @@ function App() {
             <img src='/logo.png' className='w-56'></img>
         </div>
 
-        <div className="col-span-1 row-span-3 border-r border-t border-orion-pink flex flex-col">
+        <div className="col-start-12 col-span-1 row-span-3 border-r border-t border-orion-pink flex flex-col">
             <h2 className="font-orbitron text-xs text-orion-pink uppercase text-center pt-4">
               Life Support
             </h2>
@@ -64,6 +67,18 @@ function App() {
               <LifeSupport label="CO2 Concentration" percent={15} unit="ppm" />
               <LifeSupport label="Cabin Pressure" percent={101} unit="kPa" />
             </div>
+        </div>
+
+        <div className="col-span-2 row-start-10 row-span-3 pointer-events-auto">
+          <Terminal />
+        </div>
+
+        <div className="col-span-7 row-start-11 row-span-2 self-end pointer-events-auto">
+          <Menu />
+        </div>
+
+        <div className="row-start-11 row-span-2 col-start-10 col-span-3 self-center pointer-events-auto">
+          <HealthBar integrity={50}/>
         </div>
 
       </div>

@@ -9,6 +9,7 @@ export default {
       fontFamily: {
         orbitron: ['Orbitron', 'sans-serif'],
         oxanium: ['Oxanium', 'sans-serif'],
+        jetbrains: ["JetBrains Mono", "monospace"],
       },
       colors: {
         orion: {
