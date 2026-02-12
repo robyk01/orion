@@ -4,8 +4,8 @@ export default function LifeSupport({label, percent, unit}){
     const circumference = 2 * Math.PI * radius
     const offset = circumference - (percent / 100) * circumference
     return(
-         <div className="relative flex flex-col items-center gap-2">
-            <div className="relative w-28 h-28 flex items-center justify-center">
+         <div className="relative flex flex-col items-center gap-2 bg-orion-void/5 backdrop-blur-sm p-2 rounded">
+            <div className="relative w-28 h-28 flex">
                 <svg className="-rotate-90 w-28 h-28" viewBox="0 0 100 100">
                     <circle 
                         r={radius} cx={50} cy={50}
