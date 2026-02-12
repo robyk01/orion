@@ -69,16 +69,16 @@ function App() {
             </div>
         </div>
 
-        <div className="col-span-2 row-start-10 row-span-3 pointer-events-auto">
+        <div className="col-start-1 col-span-2 row-start-10 row-span-3 pointer-events-auto">
           <Terminal />
         </div>
 
-        <div className="col-span-7 row-start-11 row-span-2 self-end pointer-events-auto">
+        <div className="col-start-1 col-span-12 row-start-12 row-span-1 self-end pointer-events-auto">
           <Menu />
         </div>
 
         <div className="row-start-11 row-span-2 col-start-10 col-span-3 self-center pointer-events-auto">
-          <HealthBar integrity={50}/>
+          <HealthBar integrity={80}/>
         </div>
 
       </div>
