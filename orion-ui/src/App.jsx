@@ -44,21 +44,24 @@ function App() {
       </div>
 
       <div className="grid grid-cols-12 grid-rows-12 h-screen w-full p-4 gap-4 justify-between z-10 relative pointer-events-none">
-        <div className="bg-orion-void/5 backdrop-blur-sm col-span-2 row-span-3 border-l border-t border-orion-purple p-2">
-          <h2 className="font-orbitron text-xs text-orion-purple uppercase">
+        <div className="bg-orion-void/5 backdrop-blur-sm col-span-2 row-span-3 border-l border-t border-orion-pink p-2">
+          <h2 className="font-orbitron text-xs text-orion-pink
+           uppercase">
             Navigation
           </h2>
           <Navigation />
         </div>
 
-        <div className="bg-orion-void/5 backdrop-blur-sm col-start-11 col-span-2 row-span-7 border-r border-t border-orion-purple p-2 text-center">
-          <h2 className="font-orbitron text-xs text-orion-purple uppercase">
-            Life Support
-          </h2>
-          <div className="flex flex-col gap-4 p-4">
-            <LifeSupport label="Oxygen" percent={98} unit="%" />
-            <LifeSupport label="CO2 Concentration" percent={15} unit="ppm" />
-            <LifeSupport label="Cabin Pressure" percent={101} unit="kPa" />
+        <div className="bg-orion-void/5 backdrop-blur-sm col-start-11 col-span-2 row-span-7 flex flex-col">
+          <div className="border-r border-t border-orion-pink p-2 text-center h-fit">
+            <h2 className="font-orbitron text-xs text-orion-pink uppercase">
+              Life Support
+            </h2>
+            <div className="flex flex-col gap-4 p-4">
+              <LifeSupport label="Oxygen" percent={98} unit="%" />
+              <LifeSupport label="CO2 Concentration" percent={15} unit="ppm" />
+              <LifeSupport label="Cabin Pressure" percent={101} unit="kPa" />
+            </div>
           </div>
         </div>
 

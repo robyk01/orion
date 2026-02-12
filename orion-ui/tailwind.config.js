@@ -13,8 +13,10 @@ export default {
       colors: {
         orion: {
           void: '#15173D',    // Main background
-          purple: '#E491C9',  // Nebula glow
-          neon: '#00f5d4',    // Primary cyan accent
+          purple1: '#270071',
+          purple2: "#3b1a9e",
+          purple3: "#876aff",
+          pink: "#c185ee",
           alert: '#f15bb5',   // Warning magenta
         },
       },

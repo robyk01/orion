@@ -19,7 +19,7 @@ export default function LifeSupport({label, percent, unit}){
                         strokeDashoffset={offset}
                         fill="transparent"
                         strokeLinecap="round"
-                        className="text-orion-neon transition-all duration-500"
+                        className="text-orion-pink transition-all duration-500"
                     />
                 </svg>
 
