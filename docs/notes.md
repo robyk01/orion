@@ -21,3 +21,9 @@
    - **ENG (PROP/EPS)**: This combines Propulsion (PROP) and Electrical (EPS). Rocket Equation and the Solar/Battery power grid.
    - **BIO (ECLSS)**: The deep-dive for Life Support. Shows Sabatier reaction efficiency and humidity
    - **INTEL (HMS/Terminal)**: Satellite images, Vision data, and long-range communication logs.
+
+
+### Subsystems
+1. **ECLSS** (Environment Control and Life Support System)
+ECLSS is a life support system that provides or controls atmospheric pressure, fire detection and suppression, oxygen levels, proper ventilation, waste management and water supply. It includes three components: **The Water Recovery System**, **The Air Revitalization System** and **The Oxygen Generation System**. 
+

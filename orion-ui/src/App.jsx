@@ -7,8 +7,10 @@ import LifeSupport from './components/LifeSupport'
 import Terminal from './components/Terminal'
 import Menu from './components/Menu'
 import HealthBar from './components/HealthBar'
+import { useShipData } from './hooks/useShipData'
 
 function App() {
+  const telemetry = useShipData();
 
   return (
     <div className="relative w-full h-screen text-white overflow-hidden">
@@ -63,9 +65,9 @@ function App() {
               Life Support
             </h2>
             <div className="flex flex-col gap-1 p-2 items-end">
-              <LifeSupport label="Oxygen" percent={98} unit="%" />
-              <LifeSupport label="CO2 Concentration" percent={15} unit="ppm" />
-              <LifeSupport label="Cabin Pressure" percent={101} unit="kPa" />
+              <LifeSupport label="Oxygen" percent={telemetry.oxygen} unit="%" />
+              <LifeSupport label="CO2 Concentration" percent={telemetry.co2} unit="ppm" />
+              <LifeSupport label="Cabin Pressure" percent={telemetry.pressure} unit="kPa" />
             </div>
         </div>
 
@@ -78,7 +80,7 @@ function App() {
         </div>
 
         <div className="row-start-11 row-span-2 col-start-10 col-span-3 self-center pointer-events-auto">
-          <HealthBar integrity={80}/>
+          <HealthBar integrity={telemetry.integrity}/>
         </div>
 
       </div>
