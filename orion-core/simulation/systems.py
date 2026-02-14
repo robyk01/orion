@@ -12,8 +12,12 @@ class ShipSystems:
         self.pressure = 101.3
 
     def update_eclss(self, delta_time, crew_count=1):
-        """Simulates O2 consumption and CO2 buildup."""
+        """Simulates O2 consumption and CO2 buildup + scrubbing."""
         consumption = 0.001 * crew_count * delta_time
         self.oxygen = max(0, self.oxygen - consumption)
 
         self.co2 += (consumption * 2000)
+
+        # Scrubber removes CO2
+        scrub_rate = 1.5
+        self.co2 = max(400, self.co2 - (scrub_rate * delta_time))

@@ -11,14 +11,24 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             # Update simulation
-            ship.update_eclss(delta_time=1)
+            ship.update_eclss(delta_time=1, crew_count=1)
             
             # Create data packet
             data = {
-                "oxygen": round(ship.oxygen, 2),
-                "co2": round(ship.co2, 0),
-                "pressure": round(ship.pressure, 0),
-                "integrity": 100
+                "eclss": {
+                    "oxygen": round(ship.oxygen, 2),
+                    "co2": round(ship.co2, 0),
+                    "pressure": round(ship.pressure, 0),
+                },
+                "systems": {
+                    "integrity": 100,
+                    "solar": round(ship.solar_input, 0),
+                },
+                "gnc": {
+                    "rotation": 0,
+                    "velocity": 0,
+                    "orbit": 0,
+                },
             }
 
             await websocket.send_json(data)

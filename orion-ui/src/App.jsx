@@ -65,9 +65,9 @@ function App() {
               Life Support
             </h2>
             <div className="flex flex-col gap-1 p-2 items-end">
-              <LifeSupport label="Oxygen" percent={telemetry.oxygen} unit="%" />
-              <LifeSupport label="CO2 Concentration" percent={telemetry.co2} unit="ppm" />
-              <LifeSupport label="Cabin Pressure" percent={telemetry.pressure} unit="kPa" />
+              <LifeSupport label="Oxygen" percent={telemetry.eclss.oxygen} unit="%" />
+              <LifeSupport label="CO2 Concentration" percent={telemetry.eclss.co2} unit="ppm" />
+              <LifeSupport label="Cabin Pressure" percent={telemetry.eclss.pressure} unit="kPa" />
             </div>
         </div>
 
@@ -80,7 +80,7 @@ function App() {
         </div>
 
         <div className="row-start-11 row-span-2 col-start-10 col-span-3 self-center pointer-events-auto">
-          <HealthBar integrity={telemetry.integrity}/>
+          <HealthBar integrity={telemetry.systems.integrity}/>
         </div>
 
       </div>
