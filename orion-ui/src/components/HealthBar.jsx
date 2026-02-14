@@ -1,14 +1,25 @@
 
-export default function HealthBar({integrity}){
+export default function HealthBar({integrity, battery_charge, net_power}){
     const totalSegments = 30;
     const activeSegments = Math.round((integrity / 100) * totalSegments);
     const isCritical = integrity <= 20
 
+    const getBatteryIcon = () => {
+        if (battery_charge <= 20) return "battery-red.png";
+        if (net_power < 0) return "battery-orange.png";
+        return "battery-green.png";
+    };
+
     return(
         <div className="flex flex-col justify-center text-lg font-orbitron gap-2 w-full pr-6">
             <div className="flex justify-between w-full">
-                <span className="shrink-0">System Health</span>
-                <div className="flex gap-6 flex-wrap">
+                <div className="flex items-center gap-4">
+                    <span className="shrink-0">System Health</span>
+                    <img src={getBatteryIcon()} className="w-6 "></img>
+                </div>
+                
+                <div className="flex gap-4 flex-wrap items-center">
+
                     <div className="flex items-center gap-2">
                         <img src="engine.svg" className="w-6"></img>
                         <div className="w-3 h-3 bg-green-500 rounded-sm"></div>
@@ -23,6 +34,7 @@ export default function HealthBar({integrity}){
                         <img src="sensor.svg" className="w-6"></img>
                         <div className="w-3 h-3 bg-red-500 rounded-sm"></div>
                     </div>
+                    
                 </div>
                 
             </div>

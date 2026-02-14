@@ -12,6 +12,7 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             # Update simulation
             ship.update_eclss(delta_time=1, crew_count=1)
+            ship.update_eps(delta_time=1)
             
             # Create data packet
             data = {
@@ -22,13 +23,16 @@ async def websocket_endpoint(websocket: WebSocket):
                 },
                 "systems": {
                     "integrity": 100,
-                    "solar": round(ship.solar_input, 0),
                 },
                 "gnc": {
                     "rotation": 0,
                     "velocity": 0,
                     "orbit": 0,
                 },
+                "eps": {
+                    "battery_charge": round(ship.battery_charge, 1),
+                    "net_power": round(ship.net_power, 2)
+                }
             }
 
             await websocket.send_json(data)
@@ -37,3 +41,20 @@ async def websocket_endpoint(websocket: WebSocket):
 
     except Exception as e:
         print(f"Connection closed: {e}")
+
+
+@app.get("/test/eps")
+def test_eps_math(dist: float, drain: float, dt: float = 1.0):
+    # Temporarily set the ship's state for the test
+    ship.distance_from_sun = dist
+    ship.base_drain = drain
+
+    solar_input = ship.solar_base_output / (dist ** 2)
+    
+    ship.update_eps(delta_time=dt)
+    
+    return {
+        "solar_input_watts": round(solar_input, 2),
+        "net_power": round(solar_input - ship.base_drain, 2),
+        "new_battery_percentage": round(ship.battery_charge, 4)
+    }

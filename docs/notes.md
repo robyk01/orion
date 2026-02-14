@@ -31,4 +31,32 @@
    - Humans consume approx 0.84kg O2/day. Here we simplified to a percentage drop `0.001 * crew_count * delta_time`
    - As O2 is consumed, CO2 is produced. I use a multiplier of 2000 to convert the metabolic drop in oxygen into a buildup of CO2 in ppm (parts per million - used for efficient tracking instead of percentages; PPM represents the number of CO2 molecules per million total molecules of air)
    - To prevent suffocation, I implemented a CDRA (Carbon Dioxide Removal Assembly): `self.co2 = max(400, self.co2 - (scrub_rate * delta_time))`. 400 ppm is Earth natural level and the scrubber can't go below this value.
+  
+   **Sabatier Reaction**
+   On long duration trips (like ISS or Mars), you can't just bring enough oxygen tanks for years. This reaction helps us close the loop.
 
+   - **Formula**: CO2 + 4H2 = CH4 + 2H2O
+   - **Inputs**: Carbon Dioxide (waste from crew), Hidrogen (byproduct of other systems)
+   - **Outputs**: Methane (fuel for the rocket), Water
+
+2. **EPS** (Electrical Power System)
+   
+   EPS is the heart of the spacecraft. It is responsible for the Generation, Regulation and Storage of electrical energy.
+
+   - **Power Generation** (The Inverse Square Law): 
+      
+      The ship uses photovoltaic (solar) panels. The efficiency of the panels is not constant, it depends on the proximity to the Sun.
+      - **Formula**: `solar_input = self.solar_base_output / (self.distance_from_sun ** 2)`
+      - **Explanation**: Because light radiates spherically, doubling the distance (eg. 2 AU) results in 1/4 (25%) of the power.
+    - **Energy Balance** (Net Power):
+      
+      We track the health of our electric system by the Net Power. This is a simple accounting of what we made vs. what we spend. 
+      - **Formula**: `net_power = solar_input - self.base_drain`
+      - **The States**:
+        - Surplus (net_power > 0): Batteries are charging.
+        - Equilibrium (net_power == 0): Theoretical perfect balance.
+        - Deficit (net_power < 0): Occurs during eclipses or high-load maneuvers.
+    - **Energy Storage**:
+
+      The battery acts as a reservoir. While our sensors measure Watts (instantaneous flow), the battery stores Watt-hours (energy = power * time passed).
+   

@@ -80,7 +80,7 @@ function App() {
         </div>
 
         <div className="row-start-11 row-span-2 col-start-10 col-span-3 self-center pointer-events-auto">
-          <HealthBar integrity={telemetry.systems.integrity}/>
+          <HealthBar integrity={telemetry.systems.integrity} battery_charge={telemetry.eps.battery_charge} net_power={telemetry.eps.net_power} />
         </div>
 
       </div>
