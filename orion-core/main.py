@@ -13,6 +13,7 @@ async def websocket_endpoint(websocket: WebSocket):
             # Update simulation
             ship.update_eclss(delta_time=1, crew_count=1)
             ship.update_eps(delta_time=1)
+            ship.update_gnc(delta_time=1)
             
             # Create data packet
             data = {
@@ -25,9 +26,9 @@ async def websocket_endpoint(websocket: WebSocket):
                     "integrity": 100,
                 },
                 "gnc": {
-                    "rotation": 0,
-                    "velocity": 0,
-                    "orbit": 0,
+                    "pitch": round(ship.pitch, 2),
+                    "velocity": round(ship.velocity, 2),
+                    "orbit": round(ship.orbit_percent, 2)
                 },
                 "eps": {
                     "battery_charge": round(ship.battery_charge, 1),

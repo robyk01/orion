@@ -53,7 +53,7 @@ function App() {
           <h2 className="font-orbitron text-xs text-orion-pink uppercase">
             Navigation
           </h2>
-          <Navigation />
+          <Navigation pitch={telemetry.gnc.pitch} velocity={telemetry.gnc.velocity} orbit={telemetry.gnc.orbit} />
         </div>
 
         <div className="col-span-10 flex justify-center">
