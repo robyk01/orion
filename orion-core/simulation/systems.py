@@ -24,7 +24,9 @@ class ShipSystems:
         self.roll = 0.0
         self.yaw = 0.0
         self.distance_traveled = 0.0 # Km
-        self.total_distance = 0.01 * 150000000 # Km
+        self.y = 0.0 # Km
+        self.z = 0.0 # Km
+        self.total_distance = 150000000 # Km
         self.velocity = 2344.0 # Km/h
         self.orbit_percent = 90.0 # Percentage
         self.AU_KM = 149000000 # Km
@@ -32,7 +34,7 @@ class ShipSystems:
         # PROP
         self.fuel = 1000.0 # Kg
         self.is_engine_on = False
-        self.thrust_power = 0.0098 # Km/s^2 (1g)
+        self.thrust_power = 100000 * 0.0098 # Km/s^2 (1g)
         self.fuel_burn_rate = 0.1 # Kg/s
 
         # INTEL
@@ -83,7 +85,11 @@ class ShipSystems:
         """Simulates real rotation and distance progress."""
         # sensor noise for rotation and velocity
         self.pitch += random.uniform(-0.1, 0.1)
+        self.yaw += random.uniform(-0.1, 0.1)
+        self.roll += random.uniform(-0.1, 0.1)
         self.velocity += random.uniform(-1, 1)
+        self.y += random.uniform(-0.1, 0.1)
+        self.z += random.uniform(-0.1, 0.1)
 
         # distance progress
         self.distance_traveled += self.velocity * delta_time
@@ -95,7 +101,7 @@ class ShipSystems:
             braking_force = max(0.1, remaining / 5.0)
 
             new_velocity = self.velocity * braking_force
-            self.velocity = max(100, new_velocity)
+            self.velocity = max(500, new_velocity)
             self.is_engine_on = False
 
             if self.alerts['braking'] == 0:
