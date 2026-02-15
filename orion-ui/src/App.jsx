@@ -107,7 +107,7 @@ function App() {
           <Terminal />
         </div>
 
-        <div className="col-start-1 col-span-12 row-start-12 row-span-1 self-end pointer-events-auto">
+        <div className="col-start-1 col-span-12 row-start-12 row-span-1 self-end flex justify-center pointer-events-auto">
           <Menu />
         </div>
 
