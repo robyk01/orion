@@ -36,7 +36,9 @@ async def websocket_endpoint(websocket: WebSocket):
                     "net_power": round(ship.net_power, 2)
                 },
                 "prop": {
-                    "is_engine_on": ship.is_engine_on
+                    "is_engine_on": ship.is_engine_on,
+                    "fuel": round(ship.fuel, 2),
+                    "thrust": ship.thrust_power if ship.is_engine_on else 0
                 }
             }
 

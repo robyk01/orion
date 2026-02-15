@@ -1,5 +1,5 @@
 
-export default function HealthBar({integrity, battery_charge, net_power, is_engine_on}){
+export default function HealthBar({integrity, battery_charge, net_power, is_engine_on, fuel, thrust}){
     const totalSegments = 30;
     const activeSegments = Math.round((integrity / 100) * totalSegments);
     const isCritical = integrity <= 20
@@ -16,10 +16,7 @@ export default function HealthBar({integrity, battery_charge, net_power, is_engi
                 <div className="flex items-center gap-6">
                     <span className="shrink-0">System Health</span>
 
-                    <div className="flex gap-1 items-center">
-                        <img src={getBatteryIcon()} className="w-6 "></img>
-                        <p className="text-xs">{battery_charge}%</p>
-                    </div>
+                    
                 </div>
                 
                 <div className="flex gap-4 flex-wrap items-center">
@@ -53,6 +50,16 @@ export default function HealthBar({integrity, battery_charge, net_power, is_engi
                          className={`h-8 flex-1 transition-all duration-500 ${isActive ? activeClass : 'bg-white/30'}`}></div>
                     ) 
                 })}
+            </div>
+
+            <div className="flex gap-4 text-sm justify-between">
+                <div className="flex gap-1 items-center">
+                    <img src={getBatteryIcon()} className="w-6 "></img>
+                    <p className="text-xs">{battery_charge}%</p>
+                </div>
+                <div className="flex gap-4">
+                    <span>Fuel: {fuel}</span>
+                </div>
             </div>
         </div>
     )

@@ -6,7 +6,7 @@ export function useShipData(){
         systems: { integrity: 100 },
         gnc: { pitch: 0, velocity: 0, orbit: 0 },
         eps: { battery_charge: 0, net_power: 0 },
-        prop: { is_engine_on: 0 }
+        prop: { is_engine_on: 0, fuel: 0, thrust: 0 }
     });
 
     useEffect(() => {

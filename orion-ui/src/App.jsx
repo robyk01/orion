@@ -84,7 +84,9 @@ function App() {
             integrity={telemetry.systems.integrity}
             battery_charge={telemetry.eps.battery_charge}
             net_power={telemetry.eps.net_power}
-            is_engine_on={telemetry.prop.is_engine_on} />
+            is_engine_on={telemetry.prop.is_engine_on}
+            fuel={telemetry.prop.fuel}
+            thrust={telemetry.prop.thrust} />
         </div>
 
       </div>

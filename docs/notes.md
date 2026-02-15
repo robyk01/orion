@@ -2,7 +2,7 @@
 1. **Flight Dynamics**
    - Rotation: Pitch, Roll, Yaw (degrees)
    - Velocity: Current speed (km/s)
-   - Orbit Path: Progress bar toward a destination
+   - Orbit Path: Progress percentage toward the destination
    - Clicking opens up a map with trajectory
 2. **Vitality & Environment**
    - O2 level
@@ -15,7 +15,7 @@
 4. **Systems Health**
    - Hull Integrity: Main health bar
    - Reactor Output: how much power is the ship generating
-   - Icons: engines, shields, sensors
+   - Icons: engines, shields, sensors, battery, fuel
 5. **Menu**:
    - **NAV (GNC)**: Shows the orbital trajectory you're simulating with Keplerian elements.
    - **ENG (PROP/EPS)**: This combines Propulsion (PROP) and Electrical (EPS). Rocket Equation and the Solar/Battery power grid.
@@ -76,5 +76,13 @@
        5. The HUD changes the battery icon from Green to Orange/Red based on the physical reality of the mission.
 
    *It seems like for a default solar output base of 5000W (1 AU) and a drain of 1200W (life support and essential electronics), our ship can travel to a distance of approx. 2.04 AU (the limit imposed by the Inverse Square Law formula, as 5000/4.16 barely fits the 1200W drain). This means that we can get near the Snow Line within the Asteroid belt. After that, we must rely on the solar energy stored within the batteries.*
+
+4. **Propulsion**:
+
+   The propulsion system allows the ship to increase it's velocity, moving it from a costing state to an active acceleration state. This system is the primary consumer of fuel and electrical resources.
+
+   - **Constant Acceleration**: To provide a realistic sense of scale, I implemented thrust based on Earth's gravity: `self.velocity += self.thrust_power * delta_time`. Thrust power is set to 0.0098 km/s^2. This creates a steady, linear increase in velocity.
+   - **Fuel Consumption**: The engine requires a steady flow of propellant to maintain thrust: `self.fuel -= self.fuel_burn_rate * delta_time`
+   - **Power Link**: Engines require electrical power for ignition, cooling and fuel pumps. When the engine is active, the ship's base drain increases by 1000W.
 
    

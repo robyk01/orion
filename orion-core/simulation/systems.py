@@ -19,8 +19,8 @@ class ShipSystems:
         self.roll = 0.0
         self.yaw = 0.0
         self.distance_traveled = 0.0 # Km
-        self.total_distance = 3 * 150000000 # Km
-        self.velocity = 100 * 2344.0 # Km/h
+        self.total_distance = 150000000 # Km
+        self.velocity = 2344.0 # Km/h
         self.orbit_percent = 0.0 # Percentage
         self.AU_KM = 149000000 # Km
 
@@ -84,6 +84,7 @@ class ShipSystems:
 
             # decrease fuel
             self.fuel -= self.fuel_burn_rate * delta_time
+            self.fuel = max(0, self.fuel)
         
         else: self.is_engine_on = False # if out of fuel
 

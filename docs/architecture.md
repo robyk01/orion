@@ -1,6 +1,6 @@
 ### Orion: Systems Architecture & Research
 #### **Core Simulation Engine**
-- **Central State Manager**: Maintains a global dictionary of every ship variable (JSON-based).
+- **Central State Manager**: Maintains a global class with every ship variable.
 - **The Tick-Generator**: A high-precision timer (Python asyncio) that triggers every system to update its state simultaneously.
 - **Telemetry Streamer**: A FastAPI WebSocket server that filters and pushes state updates to the UI.
   
