@@ -59,4 +59,20 @@
     - **Energy Storage**:
 
       The battery acts as a reservoir. While our sensors measure Watts (instantaneous flow), the battery stores Watt-hours (energy = power * time passed).
+
+3. **GNC** (Guidance, Navigation, and Control):
+   
+   GNC is the brain of spacecraft's movement. It determines where the ship is, where it's going, and how to maintain it's orientation in the vacuum of space.
+   - **Attitude Control and Sensor Noise**: Spacecrafts use gyroscopes and star trackers to maintain orientation so I implemented a Sensor Drift to make the HUD feel alive: `self.pitch += random.uniform(-0.1, 0.1)`
+   - **Linear Progress**: Distance is the integral of velocity over time. Every second, the ship calculates it's position based on the current speed: `distance_traveled += velocity * delta_time`
+   - **Systems Link**: The most important part of this simulation is that the subsystems are not isolated. The environment changes based on the ship's movement, creating a physics loop.
+  
+       As the ship moves away from the Sun, we must update the environment: `distance_from_sun = 1.0 + (distance_traveled / AU_KM)`
+       **Results**:
+       1. GNC increases distance.
+       2. The Environment updates the AU value.
+       3. EPS sees the higher AU and drops the solar_input via the Inverse Square Law.
+       4. The Battery begins to drain because net_power becomes negative.
+       5. The HUD changes the battery icon from Green to Orange/Red based on the physical reality of the mission.
+
    

@@ -13,9 +13,13 @@ export default function HealthBar({integrity, battery_charge, net_power}){
     return(
         <div className="flex flex-col justify-center text-lg font-orbitron gap-2 w-full pr-6">
             <div className="flex justify-between w-full">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-6">
                     <span className="shrink-0">System Health</span>
-                    <img src={getBatteryIcon()} className="w-6 "></img>
+
+                    <div className="flex gap-1 items-center">
+                        <img src={getBatteryIcon()} className="w-6 "></img>
+                        <p className="text-xs">{battery_charge}%</p>
+                    </div>
                 </div>
                 
                 <div className="flex gap-4 flex-wrap items-center">

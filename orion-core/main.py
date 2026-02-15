@@ -31,7 +31,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     "orbit": round(ship.orbit_percent, 2)
                 },
                 "eps": {
-                    "battery_charge": round(ship.battery_charge, 1),
+                    "battery_charge": round(ship.battery_charge, 0),
                     "net_power": round(ship.net_power, 2)
                 }
             }

@@ -18,10 +18,11 @@ class ShipSystems:
         self.pitch = 141.00
         self.roll = 0.0
         self.yaw = 0.0
-        self.distance_traveled = 0.0
-        self.total_distance = 150000000
-        self.velocity = 2344.0
-        self.orbit_percent = 0.0
+        self.distance_traveled = 0.0 # KM
+        self.total_distance = 150000000 # KM
+        self.velocity = 2344.0 # KM/h
+        self.orbit_percent = 0.0 # Percentage
+        self.AU_KM = 149000000 # KM
 
     def update_eclss(self, delta_time, crew_count=1):
         """Simulates O2 consumption and CO2 buildup + scrubbing."""
@@ -57,4 +58,10 @@ class ShipSystems:
 
         # distance progress
         self.distance_traveled += self.velocity * delta_time
-        self.orbit_percent = (self.distance_traveled / self.total_distance) * 100
+        self.orbit_percent = min(100, (self.distance_traveled / self.total_distance) * 100)
+
+        # convert traveled distance to AU
+        traveled_au = self.distance_traveled / self.AU_KM
+        self.distance_from_sun = 1.0 + traveled_au
+
+
