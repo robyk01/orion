@@ -1,8 +1,18 @@
 import asyncio
 from fastapi import FastAPI, WebSocket
 from simulation.systems import ShipSystems
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"], 
+    allow_headers=["*"],
+)
+
+
 ship = ShipSystems()
 
 @app.websocket("/ws/telemetry")
@@ -39,7 +49,8 @@ async def websocket_endpoint(websocket: WebSocket):
                     "is_engine_on": ship.is_engine_on,
                     "fuel": round(ship.fuel, 2),
                     "thrust": ship.thrust_power if ship.is_engine_on else 0
-                }
+                },
+                "logs": list(ship.logs)
             }
 
             await websocket.send_json(data)
@@ -65,3 +76,11 @@ def test_eps_math(dist: float, drain: float, dt: float = 1.0):
         "net_power": round(solar_input - ship.base_drain, 2),
         "new_battery_percentage": round(ship.battery_charge, 4)
     }
+
+@app.post("/command")
+async def receive_command(data: dict):
+    cmd = data.get("command")
+    if cmd:
+        success = ship.handle_command(cmd)
+        return {'status': 'success' if success else 'invalid'}
+    return {'status': 'empty'}

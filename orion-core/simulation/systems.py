@@ -1,13 +1,17 @@
 import math
 import random
+from collections import deque
 
 class ShipSystems:
     def __init__(self):
         # Initial states
+
+        # ECLSS
         self.oxygen = 21.0 # percentage
         self.co2 = 400.0 # ppm
         self.pressure = 101.3 # kPa
 
+        # EPS
         self.battery_capacity = 100.0 # kWh
         self.battery_charge = 100.0 # percentage
         self.solar_base_output = 5000 # W (1 AU / Earth distance)
@@ -15,6 +19,7 @@ class ShipSystems:
         self.distance_from_sun = 1 # AU (Earth distance)
         self.net_power = 0.0
 
+        # GNC
         self.pitch = 141.00
         self.roll = 0.0
         self.yaw = 0.0
@@ -24,10 +29,19 @@ class ShipSystems:
         self.orbit_percent = 0.0 # Percentage
         self.AU_KM = 149000000 # Km
 
+        # PROP
         self.fuel = 1000.0 # Kg
         self.is_engine_on = False
         self.thrust_power = 0.0098 # Km/s^2 (1g)
         self.fuel_burn_rate = 0.1 # Kg/s
+
+        # INTEL
+        self.logs = deque([
+            "SYS: All systems nominal.",
+            "INTEL: Welcome back, Pilot."
+        ], maxlen=6)
+
+
 
     def update_eclss(self, delta_time, crew_count=1):
         """Simulates O2 consumption and CO2 buildup + scrubbing."""
@@ -87,5 +101,37 @@ class ShipSystems:
             self.fuel = max(0, self.fuel)
         
         else: self.is_engine_on = False # if out of fuel
+
+
+    def add_log(self, source, message):
+            """Formats and adds a message to the ship's log."""
+            self.logs.append(f"{source}: {message}")
+
+    def handle_command(self, cmd_text):
+        """Processes CLI inputs from the terminal."""
+        cmd = cmd_text.lower().strip()
+
+        if cmd == '/engine on':
+            if self.fuel > 0:
+                self.is_engine_on = True
+                self.add_log("GNC", "Thrusters engaged.")
+                return True
+            self.add_log("INTEL", "Thruster ignition failed: Low fuel.")
+
+        if cmd == '/engine off':
+            self.is_engine_on = False
+            self.add_log("GNC", "Engine shutdown.")
+            return True
+        
+        if cmd.startswith('/set o2'):
+            try:
+                val = float(cmd.split()[-1])
+                self.oxygen = val
+                self.add_log("ECLSS", f"Oxygen levels manually set to {val}%")
+                return True
+            except:
+                self.add_log("INTEL", "Invalid O2 value.")
+
+        return False
 
 

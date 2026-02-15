@@ -59,6 +59,7 @@ export default function HealthBar({integrity, battery_charge, net_power, is_engi
                 </div>
                 <div className="flex gap-4">
                     <span>Fuel: {fuel}</span>
+                    <span>Thrust: {thrust}</span>
                 </div>
             </div>
         </div>
