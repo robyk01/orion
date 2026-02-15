@@ -24,9 +24,9 @@ class ShipSystems:
         self.roll = 0.0
         self.yaw = 0.0
         self.distance_traveled = 0.0 # Km
-        self.total_distance = 3 * 150000000 # Km
+        self.total_distance = 0.01 * 150000000 # Km
         self.velocity = 2344.0 # Km/h
-        self.orbit_percent = 0.0 # Percentage
+        self.orbit_percent = 90.0 # Percentage
         self.AU_KM = 149000000 # Km
 
         # PROP
@@ -40,6 +40,11 @@ class ShipSystems:
             "SYS: All systems nominal.",
             "INTEL: Welcome back, Pilot."
         ], maxlen=6)
+
+        self.alerts = {
+            "braking": 0,
+            "docking": 0
+        }
 
 
 
@@ -83,6 +88,29 @@ class ShipSystems:
         # distance progress
         self.distance_traveled += self.velocity * delta_time
         self.orbit_percent = min(100, (self.distance_traveled / self.total_distance) * 100)
+
+        # reduce velocity as ships approaches target
+        if self.orbit_percent >= 95 and self.orbit_percent < 100:
+            remaining = 100 - self.orbit_percent
+            braking_force = max(0.1, remaining / 5.0)
+
+            new_velocity = self.velocity * braking_force
+            self.velocity = max(100, new_velocity)
+            self.is_engine_on = False
+
+            if self.alerts['braking'] == 0:
+                self.alerts["braking"] = 1
+                self.add_log("GNC", "Automated Braking initiated.")
+
+        # turn off engine
+        if self.orbit_percent >= 100:
+            self.is_engine_on = False
+            self.velocity = 0
+
+            if self.alerts['docking'] == 0:
+                self.alerts["docking"] = 1
+                self.add_log("GNC", "Arrival confirmed. Parking orbit established.")
+            
 
         # convert traveled distance to AU
         traveled_au = self.distance_traveled / self.AU_KM
