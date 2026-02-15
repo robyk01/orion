@@ -75,4 +75,6 @@
        4. The Battery begins to drain because net_power becomes negative.
        5. The HUD changes the battery icon from Green to Orange/Red based on the physical reality of the mission.
 
+   *It seems like for a default solar output base of 5000W (1 AU) and a drain of 1200W (life support and essential electronics), our ship can travel to a distance of approx. 2.04 AU (the limit imposed by the Inverse Square Law formula, as 5000/4.16 barely fits the 1200W drain). This means that we can get near the Snow Line within the Asteroid belt. After that, we must rely on the solar energy stored within the batteries.*
+
    

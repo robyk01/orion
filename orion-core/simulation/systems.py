@@ -4,7 +4,7 @@ import random
 class ShipSystems:
     def __init__(self):
         # Initial states
-        self.oxygen = 98.0 # percentage
+        self.oxygen = 21.0 # percentage
         self.co2 = 400.0 # ppm
         self.pressure = 101.3 # kPa
 
@@ -18,11 +18,16 @@ class ShipSystems:
         self.pitch = 141.00
         self.roll = 0.0
         self.yaw = 0.0
-        self.distance_traveled = 0.0 # KM
-        self.total_distance = 150000000 # KM
-        self.velocity = 2344.0 # KM/h
+        self.distance_traveled = 0.0 # Km
+        self.total_distance = 3 * 150000000 # Km
+        self.velocity = 100 * 2344.0 # Km/h
         self.orbit_percent = 0.0 # Percentage
-        self.AU_KM = 149000000 # KM
+        self.AU_KM = 149000000 # Km
+
+        self.fuel = 1000.0 # Kg
+        self.is_engine_on = False
+        self.thrust_power = 0.0098 # Km/s^2 (1g)
+        self.fuel_burn_rate = 0.1 # Kg/s
 
     def update_eclss(self, delta_time, crew_count=1):
         """Simulates O2 consumption and CO2 buildup + scrubbing."""
@@ -42,7 +47,12 @@ class ShipSystems:
         solar_input = self.solar_base_output / (self.distance_from_sun ** 2)
 
         # calculate profit/loss
-        self.net_power = solar_input - self.base_drain
+        current_drain = self.base_drain
+
+        if self.is_engine_on:
+            current_drain += 1000
+
+        self.net_power = solar_input - current_drain
 
         # convert watts to watt-seconds, then to watt-hours
         # energy = power * hours passed
@@ -63,5 +73,18 @@ class ShipSystems:
         # convert traveled distance to AU
         traveled_au = self.distance_traveled / self.AU_KM
         self.distance_from_sun = 1.0 + traveled_au
+
+
+    def update_propulsion(self, delta_time):
+        """Simulates propulsion physics and fuel consumption."""
+
+        if self.is_engine_on and self.fuel > 0:
+            # add velocity when thrusting
+            self.velocity += self.thrust_power * delta_time
+
+            # decrease fuel
+            self.fuel -= self.fuel_burn_rate * delta_time
+        
+        else: self.is_engine_on = False # if out of fuel
 
 

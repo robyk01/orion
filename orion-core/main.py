@@ -14,6 +14,7 @@ async def websocket_endpoint(websocket: WebSocket):
             ship.update_eclss(delta_time=1, crew_count=1)
             ship.update_eps(delta_time=1)
             ship.update_gnc(delta_time=1)
+            ship.update_propulsion(delta_time=1)
             
             # Create data packet
             data = {
@@ -33,6 +34,9 @@ async def websocket_endpoint(websocket: WebSocket):
                 "eps": {
                     "battery_charge": round(ship.battery_charge, 0),
                     "net_power": round(ship.net_power, 2)
+                },
+                "prop": {
+                    "is_engine_on": ship.is_engine_on
                 }
             }
 

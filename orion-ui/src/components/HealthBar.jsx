@@ -1,5 +1,5 @@
 
-export default function HealthBar({integrity, battery_charge, net_power}){
+export default function HealthBar({integrity, battery_charge, net_power, is_engine_on}){
     const totalSegments = 30;
     const activeSegments = Math.round((integrity / 100) * totalSegments);
     const isCritical = integrity <= 20
@@ -26,7 +26,7 @@ export default function HealthBar({integrity, battery_charge, net_power}){
 
                     <div className="flex items-center gap-2">
                         <img src="engine.svg" className="w-6"></img>
-                        <div className="w-3 h-3 bg-green-500 rounded-sm"></div>
+                        <div className={`w-3 h-3 ${is_engine_on ? 'bg-green-500' : 'bg-red-500'} rounded-sm`}></div>
                     </div>
 
                     <div className="flex items-center gap-2">
