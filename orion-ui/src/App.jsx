@@ -8,12 +8,44 @@ import Terminal from './components/Terminal'
 import Menu from './components/Menu'
 import HealthBar from './components/HealthBar'
 import { useShipData } from './hooks/useShipData'
+import { useState, useEffect } from 'react'
 
 function App() {
   const telemetry = useShipData();
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
+
   return (
     <div className="relative w-full h-screen text-white overflow-hidden">
+
+      <div 
+        className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-orion-void transition-all duration-1000 ease-in-out ${
+          loading ? 'opacity-100' : 'opacity-0 pointer-events-none scale-110'
+        }`}
+      >
+        <div className="relative animate-in fade-in zoom-in-95 duration-1000 ease-out">
+          <div className="absolute inset-0 bg-orion-pink/10 blur-3xl rounded-full scale-125 animate-pulse" />
+          <img 
+            src="loading_logo.png" 
+            className="w-84 h-84 relative z-10 opacity-90" 
+            alt="Icon" 
+          />
+        </div>
+
+        <p className="font-orbitron text-orion-pink/60 text-[10px] mt-12 tracking-[0.3em] uppercase animate-in fade-in slide-in-from-bottom-2 duration-1000 delay-300">
+          Initializing Flight Systems
+        </p>
+
+        <div className="w-32 h-px bg-white/10 mt-4 overflow-hidden">
+          <div className="h-full bg-orion-pink animate-progress-fast" />
+        </div>
+      </div>
 
       <div className="absolute inset-0 z-0">
         <Canvas>

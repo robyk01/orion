@@ -36,7 +36,7 @@ class ShipSystems:
         self.fuel_burn_rate = 0.1 # Kg/s
 
         # INTEL
-        self.logs = deque([
+        self.logs = deque([ 
             "SYS: All systems nominal.",
             "INTEL: Welcome back, Pilot."
         ], maxlen=6)
