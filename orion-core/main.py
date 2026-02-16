@@ -21,10 +21,10 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             # Update simulation
-            ship.update_eclss(delta_time=1, crew_count=1)
+            ship.update_eclss(delta_time=1, crew_count=4)
             ship.update_eps(delta_time=1)
             ship.update_gnc(delta_time=10)
-            ship.update_propulsion(delta_time=1)
+            ship.update_propulsion(delta_time=10)      
             
             # Create data packet
             data = {

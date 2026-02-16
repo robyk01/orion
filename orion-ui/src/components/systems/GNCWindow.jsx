@@ -25,9 +25,9 @@ export default function GNCWindow({ onToggleGNC, data }){
                             <p className="text-white/40 text-[9px] uppercase tracking-widest">Orbital Elements</p>
                             <div className="grid grid-cols-2 text-xs">
                             <span>Velocity Vector:</span>
-                            <span className="text-right font-orbitron">{data.velocity.toFixed(2)} KM/S</span>
+                            <span className="text-right font-orbitron">{data.velocity.toFixed(2)} KM/H</span>
                             <span>Delta-V Rem:</span>
-                            <span className="text-right font-orbitron text-orion-pink">4.2 KM/S</span>
+                            <span className="text-right font-orbitron text-orion-pink">4.2 KM/H</span>
                             </div>
                         </div>
 

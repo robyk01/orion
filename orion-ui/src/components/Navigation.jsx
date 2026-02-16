@@ -9,7 +9,7 @@ export default function Navigation({pitch, velocity, orbit}) {
             
             <div>
                 <h2 className="text-[10px] uppercase font-bold tracking-wider">Velocity</h2>
-                <p className="font-oxanium text-lg text-white/90">{velocity} <span className="text-xs text-white/50">km/s</span></p>
+                <p className="font-oxanium text-lg text-white/90">{velocity} <span className="text-xs text-white/50">km/h</span></p>
             </div>
             
             <div>

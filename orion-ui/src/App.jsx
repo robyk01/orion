@@ -101,7 +101,7 @@ function App() {
             <div className="flex flex-col gap-1 p-2 items-end">
               <LifeSupport label="Oxygen" percent={telemetry.eclss.oxygen} unit="%" />
               <LifeSupport label="CO2 Concentration" percent={telemetry.eclss.co2} unit="ppm" />
-              <LifeSupport label="Cabin Pressure" percent={telemetry.eclss.pressure} unit="kPa" />
+              <LifeSupport label="Cabin Pressure" percent={telemetry.eclss.pressure} unit="psi" />
             </div>
         </div>
 
