@@ -85,4 +85,17 @@
    - **Fuel Consumption**: The engine requires a steady flow of propellant to maintain thrust: `self.fuel -= self.fuel_burn_rate * delta_time`
    - **Power Link**: Engines require electrical power for ignition, cooling and fuel pumps. When the engine is active, the ship's base drain increases by 1000W.
 
+
+
+### TODO
+- EPS, ECLSS, INTEL file windows
+- Shield system
+- Sensor system
+- Calculate y and z coordonates with a drift velocity
+  `self.vy = 0.001, self.vz = -0.0005`
+- Calculate yaw and roll with an angular velocity
+- Terminal commands: /set co2, /set battery, /set fuel, /set velocity
+- Heat system
+- Add mass with fuel and without fuel for the delta V formula
+
    

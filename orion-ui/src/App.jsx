@@ -9,11 +9,13 @@ import Menu from './components/Menu'
 import HealthBar from './components/HealthBar'
 import { useShipData } from './hooks/useShipData'
 import { useState, useEffect } from 'react'
+import GNCWindow from './components/systems/GNCWindow'
 
 function App() {
   const telemetry = useShipData();
 
   const [loading, setLoading] = useState(true);
+  const [openedGNC, setOpenedGNC] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2500);
@@ -24,7 +26,7 @@ function App() {
   return (
     <div className="relative w-full h-screen text-white overflow-hidden">
 
-      <div 
+      {/* <div 
         className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-orion-void transition-all duration-1000 ease-in-out ${
           loading ? 'opacity-100' : 'opacity-0 pointer-events-none scale-110'
         }`}
@@ -45,7 +47,7 @@ function App() {
         <div className="w-32 h-px bg-white/10 mt-4 overflow-hidden">
           <div className="h-full bg-orion-pink animate-progress-fast" />
         </div>
-      </div>
+      </div> */}
 
       <div className="absolute inset-0 z-0">
         <Canvas>
@@ -108,7 +110,7 @@ function App() {
         </div>
 
         <div className="col-start-1 col-span-12 row-start-12 row-span-1 self-end flex justify-center pointer-events-auto">
-          <Menu />
+          <Menu onToggleGNC={() => setOpenedGNC(v => !v)} />
         </div>
 
         <div className="row-start-11 row-span-2 col-start-10 col-span-3 self-center pointer-events-auto">
@@ -123,7 +125,11 @@ function App() {
 
       </div>
 
-
+      {openedGNC && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <GNCWindow onToggleGNC={() => setOpenedGNC(v => !v)} data={telemetry.gnc}/>
+        </div>
+      )}
     </div>
   )
 }
