@@ -32,16 +32,17 @@ class ShipSystems:
         self.distance_traveled = 0.0 # km
         self.y = 0.0 # km
         self.z = 0.0 # km
-        self.total_distance = 384400 # km to Moon
-        self.velocity = 38000.0 # km/h
+        self.total_distance = 384400 / 100 # km to Moon 
+        self.velocity = 38000.0 / 50 # km/h
         self.orbit_percent = 0.0 # Percentage
         self.AU_KM = 149000000 # km
 
         # PROP
+        self.dry_mass = 10400.0 # kg
         self.fuel = 8600.0 # kg
         self.is_engine_on = False
-        self.thrust_power = 350.28 # km/h (1g)
-        self.fuel_burn_rate = 8.6 # kg/s
+        self.thrust_power = 10 * 26.7 # kN
+        self.fuel_burn_rate = 0.1 # kg/s
         self.thrust_direction = 1  # 1 for Forward (Prograde), -1 for Braking (Retrograde)
 
         # INTEL 
@@ -99,7 +100,7 @@ class ShipSystems:
         self.pitch += random.uniform(-0.02, 0.02)
         self.yaw += random.uniform(-0.02, 0.02)
         self.roll += random.uniform(-0.02, 0.02)
-        self.velocity += random.uniform(-5, 5)
+        self.velocity += random.uniform(-0.02, 0.02)
         self.y += random.uniform(-0.01, 0.01)
         self.z += random.uniform(-0.01, 0.01)
 
@@ -107,15 +108,21 @@ class ShipSystems:
         self.distance_traveled += (self.velocity * (delta_time / 3600))
         self.orbit_percent = min(100, (self.distance_traveled / self.total_distance) * 100)
 
-        # reduce velocity as ships approaches target
-        if self.orbit_percent >= 85 and self.orbit_percent < 100:
-            if self.alerts['braking'] == 0:
-                self.alerts["braking"] = 1
-                self.add_log("GNC", "Automated Braking initiated.")
-                
-            self.thrust_direction = -1
-            self.is_engine_on = True
+        accel_ms2 = (self.thrust_power * 1000) / (self.dry_mass + self.fuel)
+        accel_kmh2 = accel_ms2 * 3.6 * 3600
 
+        remaining_distance = self.total_distance - self.distance_traveled
+
+        # stopping distance: v2/2a
+        stopping_distance = (self.velocity ** 2) / (2 * accel_kmh2)
+
+        if remaining_distance <= stopping_distance and self.velocity > 0:
+            self.is_engine_on = True
+            self.thrust_direction = -1
+            if self.alerts['braking'] == 0:
+                self.add_log("GNC", "Calculated braking burn initiated.")
+                self.alerts['braking'] = 1
+            
         # turn off engine
         if self.orbit_percent >= 100:
             self.is_engine_on = False
@@ -135,13 +142,22 @@ class ShipSystems:
         """Simulates propulsion physics and fuel consumption."""
 
         if self.is_engine_on and self.fuel > 0:
-            # add velocity when thrusting based on direction
-            acceleration = self.thrust_power * self.thrust_direction
-            self.velocity += acceleration * delta_time
+            total_mass = self.dry_mass + self.fuel
+
+            # calc current acceleration
+            # F = m * a => a = F/m
+            accel_ms = (self.thrust_power * 1000) / total_mass
+
+            # convert m/s to km/h
+            accel_kmh = accel_ms * 3.6
+            self.velocity += accel_kmh * self.thrust_direction * delta_time
 
             if self.thrust_direction == -1 and self.velocity < 0:
-                self.velocity = 0
-                self.is_engine_on = False
+                if self.orbit_percent < 100:
+                    self.velocity = 300
+                else:
+                    self.velocity = 0
+                    self.is_engine_on = False
 
             # decrease fuel
             self.fuel -= self.fuel_burn_rate * delta_time

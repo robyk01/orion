@@ -1,14 +1,16 @@
 import { useGLTF, Stage, Environment, Center } from '@react-three/drei';
+import { useRef } from 'react';
 
 export default function ShipModel(){
-    const { scene } = useGLTF('ship.glb');
+    const group = useRef();
+    const { scene } = useGLTF('/models/orion.gltf');
 
     return(
         <>
             <Environment preset='city' />
 
             <Center>
-                <primitive object={scene} scale={0.003} rotation={[0.4, 0, -0.2]}/>
+                <primitive ref={group} object={scene} scale={1.2} rotation={[0, 0, 0]}/>
             </Center>
         </>
     );
