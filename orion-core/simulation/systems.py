@@ -49,7 +49,7 @@ class ShipSystems:
         self.logs = deque([ 
             "SYS: All systems nominal.",
             "INTEL: Welcome back, Pilot."
-        ], maxlen=6)
+        ], maxlen=15)
 
         self.alerts = {
             "braking": 0,
@@ -70,7 +70,7 @@ class ShipSystems:
         self.co2 += (consumption * 2000)
 
         # Scrubber removes CO2
-        scrub_rate = 1.5
+        scrub_rate = 7.5
         self.co2 = max(400, self.co2 - (scrub_rate * delta_time))
 
 
@@ -198,6 +198,47 @@ class ShipSystems:
                 return True
             except:
                 self.add_log("INTEL", "Invalid O2 value.")
+
+        if cmd.startswith('/set co2'):
+            try:
+                val = float(cmd.split()[-1])
+                self.co2 = val
+                self.add_log("ECLSS", f"CO2 levels manually set to {val}ppm")
+                return True
+            except:
+                self.add_log("INTEL", "Invalid CO2 value.")
+
+        if cmd.startswith('/set battery'):
+            try:
+                val = float(cmd.split()[-1])
+                self.battery_charge = val
+                self.add_log("EPS", f"Battery percentage manually set to {val}%")
+                return True
+            except:
+                self.add_log("INTEL", "Invalid value.")
+
+        if cmd.startswith('/set velocity'): 
+            try:
+                val = float(cmd.split()[-1])
+                self.velocity = val
+                self.add_log("GNC", f"Velocity manually set to {val}km/h")
+                return True
+            except:
+                self.add_log("INTEL", "Invalid value.")
+
+        if cmd.startswith('/set fuel'): 
+            try:
+                val = float(cmd.split()[-1])
+                self.fuel = val
+                self.add_log("PROP", f"Fuel manually set to {val}kg")
+                return True
+            except:
+                self.add_log("INTEL", "Invalid value.")
+
+        if cmd == '/reset':
+            self.__init__()
+            self.add_log("SYS", "Hard reset complete. All systems nominal.")
+            return True
 
         return False
 

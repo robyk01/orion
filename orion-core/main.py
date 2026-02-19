@@ -29,9 +29,12 @@ async def websocket_endpoint(websocket: WebSocket):
             # Create data packet
             data = {
                 "eclss": { 
+                    "oxygen_tank": round(ship.oxygen_tank, 1),
                     "oxygen": round(ship.oxygen, 2),
                     "co2": round(ship.co2, 0),
                     "pressure": round(ship.pressure, 0),
+                    "nitrogen_tank": round(ship.nitrogen_tank, 2),
+                    "nitrogen": round(ship.nitrogen, 2),
                 },
                 "systems": {
                     "integrity": 100, 

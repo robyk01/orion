@@ -85,17 +85,27 @@
    - **Fuel Consumption**: The engine requires a steady flow of propellant to maintain thrust: `self.fuel -= self.fuel_burn_rate * delta_time`
    - **Power Link**: Engines require electrical power for ignition, cooling and fuel pumps. When the engine is active, the ship's base drain increases by 1000W.
 
+### Terminal Commands List
 
+| Command | Definition |
+| --- | --- |
+| /engine on | Turns the engine on, activating propulsion |
+| /engine off | Turns the engine off |
+| /set o2 (value) | Sets the level of the oxygen in the tank |
+| /set co2 (value) | Sets the level of co2 in the ship |
+| /set battery (value) | Sets the percentage of battery |
+| /set velocity (value) | Sets the velocity of the ship |
+| /set fuel (value) | Sets the level of fuel in the ship |
 
 ### TODO
-- EPS, ECLSS, INTEL file windows
-- Shield system
-- Sensor system
-- Calculate y and z coordonates with a drift velocity
+- [ ] EPS, ECLSS, ~~INTEL~~ file windows
+- [ ] Shield system
+- [ ] Sensor system
+- [ ] Calculate y and z coordonates with a drift velocity
   `self.vy = 0.001, self.vz = -0.0005`
-- Calculate yaw and roll with an angular velocity
-- Terminal commands: /set co2, /set battery, /set fuel, /set velocity
-- Heat system
-- Add mass with fuel and without fuel for the delta V formula
+- [ ] Calculate yaw and roll with an angular velocity
+- [x] Terminal commands: ~~/set co2~~, ~~/set battery~~, ~~/set fuel~~, ~~/set velocity~~
+- [ ] Heat system
+- [ ] Add mass with fuel and without fuel for the delta V formula
 
    

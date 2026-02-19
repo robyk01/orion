@@ -112,13 +112,13 @@ function App() {
               Life Support
             </h2>
             <div className="flex flex-col gap-1 p-2 items-end">
-              <LifeSupport label="Oxygen" percent={telemetry.eclss.oxygen} unit="%" />
+              <LifeSupport label="Oxygen" percent={telemetry.eclss.oxygen_tank} unit="%" />
               <LifeSupport label="CO2 Concentration" percent={telemetry.eclss.co2} unit="ppm" />
               <LifeSupport label="Cabin Pressure" percent={telemetry.eclss.pressure} unit="psi" />
             </div>
         </div>
 
-        <div className="col-start-1 col-span-2 row-start-10 row-span-3 pointer-events-auto">
+        <div className="col-start-1 col-span-2 row-start-9 row-span-4 pointer-events-auto">
           <Terminal />
         </div>
 
