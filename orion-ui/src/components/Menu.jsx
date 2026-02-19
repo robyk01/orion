@@ -1,5 +1,5 @@
 
-export default function Menu({ onToggleGNC, onToggleIntel }){
+export default function Menu({ onToggleGNC, onToggleIntel, onToggleECLSS }){
     return(
         <>
             <div className="bg-orion-void/5 flex justify-center items-center w-fit border border-white/20 rounded-sm px-8 pt-3 pb-1 justify-self-center backdrop-blur-sm">
@@ -27,6 +27,7 @@ export default function Menu({ onToggleGNC, onToggleIntel }){
                     type="button"
                     className="rounded-sm"
                     aria-label="Open ECLSS menu"
+                    onClick={onToggleECLSS}
                     >
                         <img className="rounded-sm border-2 border-transparent hover:border-orion-pink hover:scale-115 origin-bottom transition-all duration-100" src="/bio.jpg" alt="GNC" />
                         <span className="text-xs text-white/60">ECLSS</span>

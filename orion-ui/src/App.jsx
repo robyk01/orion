@@ -11,6 +11,7 @@ import { useShipData } from './hooks/useShipData'
 import { useState, useEffect } from 'react'
 import GNCWindow from './components/systems/GNCWindow'
 import IntelWindow from './components/systems/IntelWindow'
+import ECLSSWindow from './components/systems/ECLSSWindow'
 
 function App() {
   const telemetry = useShipData();
@@ -19,15 +20,24 @@ function App() {
 
   const [openedGNC, setOpenedGNC] = useState(false);
   const [openedIntel, setOpenedIntel] = useState(false);
+  const [openedECLSS, setOpenedECLSS] = useState(false);
 
   const onToggleGNC = () => {
     setOpenedGNC(v => !v);
     setOpenedIntel(false)
+    setOpenedECLSS(false)
   }
 
   const onToggleIntel = () => {
     setOpenedIntel(v => !v);
     setOpenedGNC(false)
+    setOpenedECLSS(false)
+  }
+
+  const onToggleECLSS = () => {
+    setOpenedECLSS(v => !v);
+    setOpenedGNC(false)
+    setOpenedIntel(false)
   }
 
   useEffect(() => {
@@ -125,6 +135,7 @@ function App() {
         <div className="col-start-1 col-span-12 row-start-12 row-span-1 self-end flex justify-center pointer-events-auto">
           <Menu
             onToggleGNC={onToggleGNC} 
+            onToggleECLSS={onToggleECLSS}
             onToggleIntel={onToggleIntel} />
         </div>
 
@@ -150,6 +161,12 @@ function App() {
       {openedIntel && (
         <div className="fixed inset-0 flex items-center justify-center">
           <IntelWindow onToggleIntel={onToggleIntel} data={telemetry}/>
+        </div>
+      )}
+
+      {openedECLSS && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <ECLSSWindow onToggleECLSS={onToggleECLSS} data={telemetry.eclss}/>
         </div>
       )}
 

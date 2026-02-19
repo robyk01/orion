@@ -20,6 +20,7 @@ class ShipSystems:
         self.solar_wings = [2.7, 2.7, 2.7, 2.7] # kW for each wing
         self.base_load = 1.2 # kW 
         self.net_power = 0.0
+        self.is_scrubber_on = False
 
         # self.solar_base_output = 5000 # W (1 AU / Earth distance)
         # self.base_drain = 1200 # W (Life support + essential electronics)
@@ -70,9 +71,19 @@ class ShipSystems:
         self.co2 += (consumption * 2000)
 
         # Scrubber removes CO2
-        scrub_rate = 7.5
-        self.co2 = max(400, self.co2 - (scrub_rate * delta_time))
+        if self.co2 > 1000 and not self.is_scrubber_on:
+            self.is_scrubber_on = True
+            self.add_log("ECLSS", "High CO2 levels. Scrubber activated")
 
+        elif self.co2 < 500 and self.is_scrubber_on:
+            self.is_scrubber_on = False
+            self.add_log("ECLSS", "CO2 level is normal. Scrubber deactivated")
+
+        if self.is_scrubber_on:
+            scrub_rate = 10
+            self.co2 = max(400, self.co2 - (scrub_rate * delta_time))
+
+        
 
     def update_eps(self, delta_time):
         """Simulates solar panels power and battery charging/draining."""
@@ -84,6 +95,9 @@ class ShipSystems:
 
         if self.is_engine_on:
             current_drain += 1000
+
+        if self.is_scrubber_on:
+            current_drain += 500
 
         self.net_power = solar_input - current_drain
 
@@ -185,6 +199,11 @@ class ShipSystems:
                 return True
             self.add_log("INTEL", "Thruster ignition failed: Low fuel.")
 
+        if cmd == '/scrubber on':
+            self.is_scrubber_on = True
+            self.add_log("ECLSS", "CO2 Scrubber ON.")
+            return True
+
         if cmd == '/engine off':
             self.is_engine_on = False
             self.add_log("GNC", "Engine shutdown.")
@@ -231,6 +250,15 @@ class ShipSystems:
                 val = float(cmd.split()[-1])
                 self.fuel = val
                 self.add_log("PROP", f"Fuel manually set to {val}kg")
+                return True
+            except:
+                self.add_log("INTEL", "Invalid value.")
+
+        if cmd.startswith('/set pressure'): 
+            try:
+                val = float(cmd.split()[-1])
+                self.pressure = val
+                self.add_log("PROP", f"Pressure manually set to {val}kpsi")
                 return True
             except:
                 self.add_log("INTEL", "Invalid value.")

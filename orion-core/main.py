@@ -35,6 +35,7 @@ async def websocket_endpoint(websocket: WebSocket):
                     "pressure": round(ship.pressure, 0),
                     "nitrogen_tank": round(ship.nitrogen_tank, 2),
                     "nitrogen": round(ship.nitrogen, 2),
+                    "is_scrubber_on": ship.is_scrubber_on
                 },
                 "systems": {
                     "integrity": 100, 

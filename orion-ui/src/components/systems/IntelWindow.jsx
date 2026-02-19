@@ -58,9 +58,9 @@ export default function IntelWindow({onToggleIntel, data }){
         }
 
         const styles = {
-            RED: 'border-red-500 shadow-red-600 shadow-[0_5px_10px]',
-            ORANGE: 'border-orange-400 shadow-orange-600 shadow-[0_5px_10px]',
-            GREEN: 'border-green-400 shadow-green-600 shadow-[0_5px_10px]',
+            RED: 'border-red-500 shadow-red-600 shadow-[0_5px_30px_-15px]',
+            ORANGE: 'border-orange-400 shadow-orange-600 shadow-[0_5px_30px_-15px]',
+            GREEN: 'border-green-400 shadow-green-600 shadow-[0_5px_30px_-15px]',
         }
 
         return {style: styles[level], issues};
@@ -112,9 +112,9 @@ export default function IntelWindow({onToggleIntel, data }){
                             const status = getSystemStatus(sys, data); 
                             
                             return (
-                                <div key={sys} className="flex items-center gap-2">
-                                    <div className={`p-6 bg-white w-12 h-12 rounded-sm flex items-center justify-center border-2 ${status.style}`}>
-                                        <p className="text-orion-purple1 font-black text-sm">{sys}</p>
+                                <div key={sys} className={`flex items-center bg-black/50 w-full rounded-sm gap-6 border ${status.style}`}>
+                                    <div className={`p-8 border-r border-white/40 w-12 h-12 rounded-sm flex items-center justify-center `}>
+                                        <p className="font-black text-sm">{sys}</p>
                                     </div>
                                 
                                     <div className="flex flex-col">
