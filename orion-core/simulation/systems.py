@@ -27,7 +27,7 @@ class ShipSystems:
 
         # GNC
         self.pitch = 141.00
-        self.roll = 0.0
+        self.roll = 0.0 
         self.yaw = 0.0
         self.distance_traveled = 0.0 # km
         self.y = 0.0 # km
@@ -38,7 +38,7 @@ class ShipSystems:
         self.AU_KM = 149000000 # km
 
         # PROP
-        self.dry_mass = 10400.0 # kg
+        self.dry_mass = 17400.0 # kg
         self.fuel = 8600.0 # kg
         self.is_engine_on = False
         self.thrust_power = 10 * 26.7 # kN

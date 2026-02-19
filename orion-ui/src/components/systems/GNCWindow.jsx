@@ -11,7 +11,7 @@ export default function GNCWindow({ onToggleGNC, data }){
 
                 {/* Close button */}
                 <button
-                    className="fixed right-6 bg-red-400 rounded-sm text-black px-1.5 text-sm"
+                    className="absolute right-6 bg-red-400 rounded-sm text-black px-1.5 text-sm"
                     onClick={onToggleGNC}>
                         <b>x</b>
                 </button>

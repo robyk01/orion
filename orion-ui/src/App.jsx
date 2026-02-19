@@ -10,12 +10,25 @@ import HealthBar from './components/HealthBar'
 import { useShipData } from './hooks/useShipData'
 import { useState, useEffect } from 'react'
 import GNCWindow from './components/systems/GNCWindow'
+import IntelWindow from './components/systems/IntelWindow'
 
 function App() {
   const telemetry = useShipData();
 
   const [loading, setLoading] = useState(true);
-  const [openedGNC, setOpenedGNC] = useState(false)
+
+  const [openedGNC, setOpenedGNC] = useState(false);
+  const [openedIntel, setOpenedIntel] = useState(false);
+
+  const onToggleGNC = () => {
+    setOpenedGNC(v => !v);
+    setOpenedIntel(false)
+  }
+
+  const onToggleIntel = () => {
+    setOpenedIntel(v => !v);
+    setOpenedGNC(false)
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2500);
@@ -110,7 +123,9 @@ function App() {
         </div>
 
         <div className="col-start-1 col-span-12 row-start-12 row-span-1 self-end flex justify-center pointer-events-auto">
-          <Menu onToggleGNC={() => setOpenedGNC(v => !v)} />
+          <Menu
+            onToggleGNC={onToggleGNC} 
+            onToggleIntel={onToggleIntel} />
         </div>
 
         <div className="row-start-11 row-span-2 col-start-10 col-span-3 self-center pointer-events-auto">
@@ -125,11 +140,19 @@ function App() {
 
       </div>
 
+
       {openedGNC && (
         <div className="fixed inset-0 flex items-center justify-center">
-          <GNCWindow onToggleGNC={() => setOpenedGNC(v => !v)} data={telemetry.gnc}/>
+          <GNCWindow onToggleGNC={onToggleGNC} data={telemetry.gnc}/>
         </div>
       )}
+
+      {openedIntel && (
+        <div className="fixed inset-0 flex items-center justify-center">
+          <IntelWindow onToggleIntel={onToggleIntel} data={telemetry}/>
+        </div>
+      )}
+
     </div>
   )
 }

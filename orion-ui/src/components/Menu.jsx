@@ -1,5 +1,5 @@
 
-export default function Menu({ onToggleGNC }){
+export default function Menu({ onToggleGNC, onToggleIntel }){
     return(
         <>
             <div className="bg-orion-void/5 flex justify-center items-center w-fit border border-white/20 rounded-sm px-8 pt-3 pb-1 justify-self-center backdrop-blur-sm">
@@ -36,6 +36,7 @@ export default function Menu({ onToggleGNC }){
                     type="button"
                     className="rounded-sm"
                     aria-label="Open INTEL menu"
+                    onClick={onToggleIntel}
                     >
                         <img className="rounded-sm border-2 border-transparent hover:border-orion-pink hover:scale-115 origin-bottom transition-all duration-100" src="/intel.jpg" alt="GNC" />
                         <span className="text-xs text-white/60">INTEL</span>
