@@ -18,7 +18,7 @@
    - Icons: engines, shields, sensors, battery, fuel
 5. **Menu**:
    - **NAV (GNC)**: Shows the orbital trajectory you're simulating with Keplerian elements.
-   - **ENG (PROP/EPS)**: This combines Propulsion (PROP) and Electrical (EPS). Rocket Equation and the Solar/Battery power grid.
+   - **ENG (EPS)**: This combines Propulsion (PROP) and Electrical (EPS). Rocket Equation and the Solar/Battery power grid.
    - **BIO (ECLSS)**: The deep-dive for Life Support. Shows Sabatier reaction efficiency and humidity
    - **INTEL (HMS/Terminal)**: Satellite images, Vision data, and long-range communication logs.
 
@@ -91,14 +91,20 @@
 | --- | --- |
 | /engine on | Turns the engine on, activating propulsion |
 | /engine off | Turns the engine off |
+| /scrubber on | Turns the CO2 scrubber on |
+| /scrubber off | Turns the CO2 scrubber off |
+| /clear logs | Clear current command log |
+| /reset | Hard reset current config |
 | /set o2 (value) | Sets the level of the oxygen in the tank |
 | /set co2 (value) | Sets the level of co2 in the ship |
 | /set battery (value) | Sets the percentage of battery |
 | /set velocity (value) | Sets the velocity of the ship |
 | /set fuel (value) | Sets the level of fuel in the ship |
+| /set pressure (value) | Sets the cabin pressure |
+| /set pitch (value) | Sets the pitch orientation of the ship |
 
 ### TODO
-- [ ] EPS, ECLSS, ~~INTEL~~ file windows
+- [x] ~~EPS~~, ~~ECLSS~~, ~~INTEL~~ file windows
 - [ ] Shield system
 - [ ] Sensor system
 - [ ] Calculate y and z coordonates with a drift velocity
@@ -106,6 +112,6 @@
 - [ ] Calculate yaw and roll with an angular velocity
 - [x] Terminal commands: ~~/set co2~~, ~~/set battery~~, ~~/set fuel~~, ~~/set velocity~~
 - [ ] Heat system
-- [ ] Add mass with fuel and without fuel for the delta V formula
+- [x] Add mass with fuel and without fuel for the delta V formula
 
    
