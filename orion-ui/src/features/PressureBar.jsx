@@ -8,11 +8,11 @@ export default function PressureGauge ({ text, threshold, warning, critical, val
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 h-64">
+    <div className="flex flex-col items-center gap-4 h-64 w-1/3">
       <p className="text-[9px] uppercase tracking-widest opacity-60">{text}</p>
       
       <div className="relative w-4 h-full bg-black/40 rounded-full border border-white/5 overflow-hidden">
-        {/* The Pressure Level */}
+        {/* Pressure Level */}
         <div 
           className={`absolute bottom-0 w-full transition-all duration-700 ease-out ${getBarColor(value)}`}
           style={{ height: `${Math.min(100, heightPercent)}%` }}

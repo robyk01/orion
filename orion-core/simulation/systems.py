@@ -18,7 +18,8 @@ class ShipSystems:
         self.battery_capacity = 30.0 # kWh
         self.battery_charge = 100.0 # percentage
         self.solar_wings = [2.7, 2.7, 2.7, 2.7] # kW for each wing
-        self.base_load = 1.2 # kW 
+        self.base_load = 1.5 # kW 
+        self.total_drain = 0.0 # kW
         self.net_power = 0.0
         self.is_scrubber_on = False
 
@@ -88,6 +89,13 @@ class ShipSystems:
     def update_eps(self, delta_time):
         """Simulates solar panels power and battery charging/draining."""
         # total generation of 4 wings (kW to watts)
+        # calc efficiency based on the angle of incidence relative to the sun
+        peak_power = 2.8
+
+        efficiency = max(0, math.cos(math.radians(self.pitch - 141)))
+
+        self.solar_wings = [peak_power * efficiency for _ in self.solar_wings]
+
         solar_input = sum(self.solar_wings) * 1000
 
         # calculate profit/loss
@@ -98,6 +106,8 @@ class ShipSystems:
 
         if self.is_scrubber_on:
             current_drain += 500
+
+        self.total_drain = current_drain
 
         self.net_power = solar_input - current_drain
 
@@ -259,6 +269,15 @@ class ShipSystems:
                 val = float(cmd.split()[-1])
                 self.pressure = val
                 self.add_log("PROP", f"Pressure manually set to {val}kpsi")
+                return True
+            except:
+                self.add_log("INTEL", "Invalid value.")
+
+        if cmd.startswith('/set pitch'): 
+            try:
+                val = float(cmd.split()[-1])
+                self.pitch = val
+                self.add_log("PROP", f"Pitch orientation corrected to {val}°")
                 return True
             except:
                 self.add_log("INTEL", "Invalid value.")

@@ -49,11 +49,13 @@ async def websocket_endpoint(websocket: WebSocket):
                     "distance_traveled": round(ship.distance_traveled, 2),
                     "total_distance": round(ship.total_distance, 2),
                     "y": round(ship.y, 2),
-                    "z": round(ship.z, 2),
+                    "z": round(ship.z, 2), 
                 },
                 "eps": {
                     "battery_charge": round(ship.battery_charge, 0),
-                    "net_power": round(ship.net_power, 2)
+                    "net_power": round(ship.net_power, 2),
+                    "solar_wings": ship.solar_wings,
+                    "total_drain": round(ship.total_drain, 2)
                 },
                 "prop": {
                     "is_engine_on": ship.is_engine_on,
