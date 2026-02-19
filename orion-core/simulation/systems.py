@@ -218,6 +218,13 @@ class ShipSystems:
             self.is_engine_on = False
             self.add_log("GNC", "Engine shutdown.")
             return True
+
+        if cmd == '/clear logs':
+            self.logs = deque([ 
+                "SYS: All systems nominal.",
+                "INTEL: Logs cleared."
+            ], maxlen=15)
+            return True
         
         if cmd.startswith('/set o2'):
             try:

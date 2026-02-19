@@ -24,7 +24,7 @@
 
 
 ### Subsystems
-1. **ECLSS** (Environment Control and Life Support System)
+1. #### ECLSS (Environment Control and Life Support System)
 
    ECLSS is a life support system that provides or controls atmospheric pressure, fire detection and suppression, oxygen levels, proper ventilation, waste management and water supply. It includes three components: **The Water Recovery System**, **The Air Revitalization System** and **The Oxygen Generation System**. 
 
@@ -39,7 +39,7 @@
    - **Inputs**: Carbon Dioxide (waste from crew), Hidrogen (byproduct of other systems)
    - **Outputs**: Methane (fuel for the rocket), Water
 
-2. **EPS** (Electrical Power System)
+2. #### EPS (Electrical Power System)
    
    EPS is the heart of the spacecraft. It is responsible for the Generation, Regulation and Storage of electrical energy.
 
@@ -60,7 +60,7 @@
 
       The battery acts as a reservoir. While our sensors measure Watts (instantaneous flow), the battery stores Watt-hours (energy = power * time passed).
 
-3. **GNC** (Guidance, Navigation, and Control):
+3. #### GNC (Guidance, Navigation, and Control):
    
    GNC is the brain of spacecraft's movement. It determines where the ship is, where it's going, and how to maintain it's orientation in the vacuum of space.
    - **Attitude Control and Sensor Noise**: Spacecrafts use gyroscopes and star trackers to maintain orientation so I implemented a Sensor Drift to make the HUD feel alive: `self.pitch += random.uniform(-0.1, 0.1)`
@@ -77,7 +77,7 @@
 
    *It seems like for a default solar output base of 5000W (1 AU) and a drain of 1200W (life support and essential electronics), our ship can travel to a distance of approx. 2.04 AU (the limit imposed by the Inverse Square Law formula, as 5000/4.16 barely fits the 1200W drain). This means that we can get near the Snow Line within the Asteroid belt. After that, we must rely on the solar energy stored within the batteries.*
 
-4. **Propulsion**:
+4. #### Propulsion:
 
    The propulsion system allows the ship to increase it's velocity, moving it from a costing state to an active acceleration state. This system is the primary consumer of fuel and electrical resources.
 
