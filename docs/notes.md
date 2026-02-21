@@ -1,26 +1,25 @@
 ### HUD Elements
 1. **Flight Dynamics**
-   - Rotation: Pitch, Roll, Yaw (degrees)
-   - Velocity: Current speed (km/s)
+   - Rotation: Pitch (degrees)
+   - Velocity: Current speed (km/h)
    - Orbit Path: Progress percentage toward the destination
-   - Clicking opens up a map with trajectory
 2. **Vitality & Environment**
    - O2 level
    - CO2 level
-   - Cabin pressure/temperature
-   - Clicking the gauges should open a detailed view showing the Sabatier reaction status
+   - Cabin pressure
 3. **Logic and Communication**
    - Command Terminal
-   - Comms Link: Signal Strength meter and latency timer (ping)
 4. **Systems Health**
    - Hull Integrity: Main health bar
-   - Reactor Output: how much power is the ship generating
+   - Battery percentage
+   - Fuel level
+   - Thrust power
    - Icons: engines, shields, sensors, battery, fuel
 5. **Menu**:
    - **NAV (GNC)**: Shows the orbital trajectory you're simulating with Keplerian elements.
    - **ENG (EPS)**: This combines Propulsion (PROP) and Electrical (EPS). Rocket Equation and the Solar/Battery power grid.
-   - **BIO (ECLSS)**: The deep-dive for Life Support. Shows Sabatier reaction efficiency and humidity
-   - **INTEL (HMS/Terminal)**: Satellite images, Vision data, and long-range communication logs.
+   - **BIO (ECLSS)**: The deep-dive for Life Support. Shows Sabatier reaction efficiency
+   - **INTEL (HMS/Terminal)**: General information about all the systems, log history
 
 
 ### Subsystems
@@ -45,9 +44,12 @@
 
    - **Power Generation** (The Inverse Square Law): 
       
-      The ship uses photovoltaic (solar) panels. The efficiency of the panels is not constant, it depends on the proximity to the Sun.
+      Ships use photovoltaic (solar) panels. The efficiency of the panels is not constant, it depends on the proximity to the Sun.
       - **Formula**: `solar_input = self.solar_base_output / (self.distance_from_sun ** 2)`
       - **Explanation**: Because light radiates spherically, doubling the distance (eg. 2 AU) results in 1/4 (25%) of the power.
+
+      This ship has 4 solar wings in X shape. Each wing has a capacity of 2.7 kW (2.8 at peak). The power generation depends on the pitch angle. I calculated the wings efficiency with `efficiency = max(0, math.cos(math.radians(self.pitch - 141)))` using the cosine function and the angle of incidence relative to the sun.
+
     - **Energy Balance** (Net Power):
       
       We track the health of our electric system by the Net Power. This is a simple accounting of what we made vs. what we spend. 
@@ -56,6 +58,7 @@
         - Surplus (net_power > 0): Batteries are charging.
         - Equilibrium (net_power == 0): Theoretical perfect balance.
         - Deficit (net_power < 0): Occurs during eclipses or high-load maneuvers.
+
     - **Energy Storage**:
 
       The battery acts as a reservoir. While our sensors measure Watts (instantaneous flow), the battery stores Watt-hours (energy = power * time passed).
@@ -102,6 +105,12 @@
 | /set fuel (value) | Sets the level of fuel in the ship |
 | /set pressure (value) | Sets the cabin pressure |
 | /set pitch (value) | Sets the pitch orientation of the ship |
+| /event o2_leak | Creates a leak in the oxygen tank at `oxygen_leak_rate` |
+| /event power_leak | Creates a leak in the power grid adding an 800W drain |
+| /evemt gnc_drift | Simulates a control loss of the ship |
+| /event fix | Fixes all problems |
+
+
 
 ### TODO
 - [x] ~~EPS~~, ~~ECLSS~~, ~~INTEL~~ file windows

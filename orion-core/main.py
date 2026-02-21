@@ -69,6 +69,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 "logs": list(ship.logs)
             }
 
+            ship.record_telemetry()
+
             await websocket.send_json(data)
 
             await asyncio.sleep(1)

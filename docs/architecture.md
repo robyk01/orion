@@ -9,19 +9,16 @@
 #### **Subsystem Modules**
 - **Propulsion (PROP)**:
   - Logic: Implements the Tsiolkovsky Rocket Equation.
-  - Variables: Thrust, Specific Impulse, Current Mass, Propellant Temperature.
+  - Variables: Thrust, Specific Impulse, Current Mass.
 - **Guidance & Navigation (GNC)**:
   - Logic: Calculates current position using Keplerian Elements.
-  - Variables: Velocity Vector, Altitude, Orbital Period, Eccentricity.
+  - Variables: Velocity Vector, Altitude, Coordinates, Rotation.
 - **Life Support (ECLSS)**:
-  - Logic: Simulates the Sabatier Reaction (CO2 to Water/Methane) and O2 scrubbers.
-  - Variables: O2 Partial Pressure, CO2 Concentration, Humidity, Cabin Temperature.
+  - Logic: Simulates the Sabatier Reaction (CO2 to Water/Methane) and CO2 scrubbers.
+  - Variables: O2 Level , CO2 Concentration, Cabin Temperature.
 - **Electrical Power (EPS)**:
-  - Logic: Manages the Power Budget. Solar panel efficiency decreases based on distance from the sun (1/r^2).
+  - Logic: Manages the Power Budget.
   - Variables: Battery Capacity (Wh), Amperage Draw per System, Solar Flux.
-- **Health Monitoring (HMS)**:
-  - Logic: It takes the output of other systems and adds Gaussian Noise.
-  - AI Task: An Unsupervised Learning model (Isolation Forest or Autoencoder) flags when the noisy data deviates too far from the clean simulation.
 
 ---
 
