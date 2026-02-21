@@ -1,6 +1,8 @@
 import math
 import random
 import time
+import os
+import csv
 from collections import deque
 
 class ShipSystems:
@@ -56,6 +58,7 @@ class ShipSystems:
 
         # INTEL 
         self.mission_time = 0
+        self.is_recording = 0
         self.logs = deque([ 
             "SYS: All systems nominal.",
             "INTEL: Welcome back, Pilot."
@@ -212,6 +215,7 @@ class ShipSystems:
         
         else: self.is_engine_on = False # if out of fuel
 
+
     def update_time(self, delta_time):
         self.mission_time += delta_time
 
@@ -232,9 +236,40 @@ class ShipSystems:
             self.instability = 0
             self.add_log("SYS", "All leaks fixed.")
 
+
     def add_log(self, source, message):
             """Formats and adds a message to the ship's log."""
             self.logs.append(f"{source}: {message}")
+
+
+    def record_telemetry(self, filename="mission_data.csv"):
+        if not self.is_recording:
+            return
+        
+        # this defines which features the AI will look at
+        data = {
+            "timestamp": self.mission_time,
+            "pitch": self.pitch,
+            "y_pos": self.y,
+            "z_pos": self.z,
+            "o2_level": self.oxygen_tank,
+            "o2_leak_rate": self.oxygen_leak_rate,
+            "co2_level": self.co2,
+            "net_power": self.net_power,
+            "total_drain": self.total_drain,
+            "solar_input": sum(self.solar_wings) * 1000,
+            "is_scrubber_on": 1 if self.is_scrubber_on else 0,
+            "is_engine_on": 1 if self.is_engine_on else 0,
+            "is_anomaly": 1 if (self.oxygen_leak_rate > 1 or self.power_leak > 0 or self.instability > 0) else 0
+        }
+
+        file_exists = os.path.isfile(filename)
+        with open(filename, 'a', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=data.keys())
+            if not file_exists:
+                writer.writeheader()
+            writer.writerow(data)
+
 
     def handle_command(self, cmd_text):
         """Processes CLI inputs from the terminal."""
@@ -267,6 +302,16 @@ class ShipSystems:
                 "SYS: All systems nominal.",
                 "INTEL: Logs cleared."
             ], maxlen=15)
+            return True
+        
+        if cmd == '/rec on':
+            self.is_recording = 1
+            self.add_log("SYS", "Recording started.")
+            return True
+        
+        if cmd == '/rec off':
+            self.is_recording = 0
+            self.add_log("SYS", "Recording ended.")
             return True
         
         if cmd.startswith('/set o2'):
@@ -342,5 +387,7 @@ class ShipSystems:
             self.trigger_event(event_name)
 
         return False
+    
+
 
 
