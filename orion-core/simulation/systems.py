@@ -1,5 +1,6 @@
 import math
 import random
+import time
 from collections import deque
 
 class ShipSystems:
@@ -13,6 +14,7 @@ class ShipSystems:
         self.nitrogen = 79.0 # percentage
         self.co2 = 400.0 # ppm
         self.pressure = 14.7 # psi
+        self.is_scrubber_on = False
 
         self.oxygen_leak_rate = 1 # normal
 
@@ -23,7 +25,6 @@ class ShipSystems:
         self.base_load = 1.5 # kW 
         self.total_drain = 0.0 # kW
         self.net_power = 0.0
-        self.is_scrubber_on = False
 
         self.power_leak = 0 # W
 
@@ -43,7 +44,7 @@ class ShipSystems:
         self.orbit_percent = 0.0 # Percentage
         self.AU_KM = 149000000 # km
 
-        self.instability = 1 # normal
+        self.instability = 0 # normal
 
         # PROP
         self.dry_mass = 17400.0 # kg
@@ -54,6 +55,7 @@ class ShipSystems:
         self.thrust_direction = 1  # 1 for Forward (Prograde), -1 for Braking (Retrograde)
 
         # INTEL 
+        self.mission_time = 0
         self.logs = deque([ 
             "SYS: All systems nominal.",
             "INTEL: Welcome back, Pilot."
@@ -132,12 +134,18 @@ class ShipSystems:
     def update_gnc(self, delta_time):
         """Simulates real rotation and distance progress."""
         # sensor noise for rotation and velocity
-        self.pitch += random.uniform(-0.02, 0.02) * self.instability * delta_time
+        drift = math.sin(time.time() * 2) * (self.instability * 0.1)
+
+        self.pitch += (random.uniform(-0.02, 0.02) + drift) * delta_time
         self.yaw += random.uniform(-0.02, 0.02)
         self.roll += random.uniform(-0.02, 0.02)
         self.velocity += random.uniform(-0.02, 0.02)
-        self.y += random.uniform(-0.01, 0.01) * self.instability * delta_time
-        self.z += random.uniform(-0.01, 0.01) * self.instability * delta_time
+        self.y += (random.uniform(-0.01, 0.01) + drift) * delta_time
+        self.z += (random.uniform(-0.01, 0.01) + drift * 0.5) * delta_time
+
+        self.pitch %= 360
+        self.yaw   %= 360
+        self.roll  %= 360
 
         # distance progress
         self.distance_traveled += (self.velocity * (delta_time / 3600))
@@ -204,18 +212,25 @@ class ShipSystems:
         
         else: self.is_engine_on = False # if out of fuel
 
+    def update_time(self, delta_time):
+        self.mission_time += delta_time
+
 
     def trigger_event(self, event_type):
         if event_type == 'o2_leak':
             self.oxygen_leak_rate = 5
             self.add_log("ECLSS", "CRITICAL Primary O2 supply pressure drop.")
-        elif event_type == 'power_drain':
+        elif event_type == 'power_leak':
             self.power_leak = 800
             self.add_log("EPS", "CRITICAL Unidentified ground fault detected.")
         elif event_type == 'gnc_drift':
             self.instability = 500
             self.add_log("GNC", "CRITICAL Inertial Measurement Unit failure.")
-
+        elif event_type == 'fix':
+            self.oxygen_leak_rate = 1
+            self.power_leak = 0
+            self.instability = 0
+            self.add_log("SYS", "All leaks fixed.")
 
     def add_log(self, source, message):
             """Formats and adds a message to the ship's log."""
@@ -232,14 +247,19 @@ class ShipSystems:
                 return True
             self.add_log("INTEL", "Thruster ignition failed: Low fuel.")
 
+        if cmd == '/engine off':
+            self.is_engine_on = False
+            self.add_log("GNC", "Engine shutdown.")
+            return True
+        
         if cmd == '/scrubber on':
             self.is_scrubber_on = True
             self.add_log("ECLSS", "CO2 Scrubber ON.")
             return True
-
-        if cmd == '/engine off':
-            self.is_engine_on = False
-            self.add_log("GNC", "Engine shutdown.")
+        
+        if cmd == '/scrubber off':
+            self.is_scrubber_on = False
+            self.add_log("ECLSS", "CO2 Scrubber OFF.")
             return True
 
         if cmd == '/clear logs':

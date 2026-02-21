@@ -1,6 +1,9 @@
 
 export default function IntelWindow({onToggleIntel, data }){
     const eta = (data.gnc.total_distance - data.gnc.distance_traveled) / data.gnc.velocity
+    const baseThreshold = 1500;
+    const engineCost = 1000;
+    const scrubberCost = 500;
 
     const getSystemStatus = (system, data) => {
         let issues = []
@@ -8,6 +11,13 @@ export default function IntelWindow({onToggleIntel, data }){
 
         if (system === 'EPS') {
             if (data.eps.battery_charge < 10) issues.push("Low Battery.")
+            let threshold = baseThreshold;
+            if (data.prop.is_engine_on) threshold += engineCost;
+            if (data.eclss.is_scrubber_on) threshold += scrubberCost;
+
+            if (data.eps.total_drain > threshold) {
+                issues.push("CRITICAL: Power leakage.");
+}
 
             if (issues.length > 0) level = 'RED';
             else {
@@ -102,6 +112,10 @@ export default function IntelWindow({onToggleIntel, data }){
                         <span className={data.prop.direction === -1 ? "text-orange-400" : "text-green-400"}>
                             {data.prop.direction === 1 ? "PROGRADE" : "RETROGRADE"}
                         </span>
+                    </div>
+                    <div className="flex text-xs justify-between">
+                        <p>Mission Time:</p>
+                        <p>T+{(data.systems.mission_time / 60).toFixed(1)}</p>
                     </div>
                 </div>
 

@@ -25,6 +25,7 @@ async def websocket_endpoint(websocket: WebSocket):
             ship.update_eps(delta_time=1)
             ship.update_gnc(delta_time=1)
             ship.update_propulsion(delta_time=1)  
+            ship.update_time(delta_time=1)
             
             # Create data packet
             data = {
@@ -38,7 +39,8 @@ async def websocket_endpoint(websocket: WebSocket):
                     "is_scrubber_on": ship.is_scrubber_on
                 },
                 "systems": {
-                    "integrity": 100, 
+                    "integrity": 100,
+                    "mission_time": ship.mission_time 
                 },
                 "gnc": {
                     "pitch": round(ship.pitch, 2),
@@ -55,7 +57,8 @@ async def websocket_endpoint(websocket: WebSocket):
                     "battery_charge": round(ship.battery_charge, 0),
                     "net_power": round(ship.net_power, 2),
                     "solar_wings": ship.solar_wings,
-                    "total_drain": round(ship.total_drain, 2)
+                    "total_drain": round(ship.total_drain, 2),
+                    "power_leak": round(ship.power_leak, 1)
                 },
                 "prop": {
                     "is_engine_on": ship.is_engine_on,

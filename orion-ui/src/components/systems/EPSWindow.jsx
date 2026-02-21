@@ -3,6 +3,7 @@ import EnergyCore from "../../features/EnergyCore"
 import EPSItems from "../../features/EPSItems"
 
 export default function EPSWindow({ onToggleEPS, data }){
+    const leak = data.eps.power_leak
     return(
         <div className="w-[60%] h-[60%] flex flex-col rounded-sm bg-linear-to-br from-orion-pink/10 to-orion-void/10 backdrop-blur-lg border border-white/10 p-6">
 
@@ -49,6 +50,9 @@ export default function EPSWindow({ onToggleEPS, data }){
                         <EPSItems label="ECLSS Scrubber" wattage={500} isActive={data.eclss.is_scrubber_on} />
                         <EPSItems label="Propulsion Sys" wattage={1000} isActive={data.prop.is_engine_on} />
                         <EPSItems label="Comm & Comms" wattage={300} isActive={true} />
+                        {leak > 0 && (
+                            <EPSItems label="Unknown" wattage={data.eps.power_leak} isActive={leak > 0} />
+                        )}
                     </div>
                     
                     <div className="flex justify-between pt-4 ">
