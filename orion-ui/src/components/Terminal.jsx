@@ -25,7 +25,7 @@ export default function Terminal(){
                 {hudLogs?.map((log, i) => {
                         const [source, message] = log.split(': ');
                             return (
-                                <div key={i} className="grid grid-cols-[16%_84%] gap-2">
+                                <div key={i} className="grid grid-cols-[16%_84%] gap-2 items-center">
                                     <span className="text-blue-400 text-[10px]">[{source}]</span>
                                     <span className="text-gray-300">{message}</span>
                                 </div>

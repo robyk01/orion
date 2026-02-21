@@ -14,6 +14,8 @@ class ShipSystems:
         self.co2 = 400.0 # ppm
         self.pressure = 14.7 # psi
 
+        self.oxygen_leak_rate = 1 # normal
+
         # EPS
         self.battery_capacity = 30.0 # kWh
         self.battery_charge = 100.0 # percentage
@@ -22,6 +24,8 @@ class ShipSystems:
         self.total_drain = 0.0 # kW
         self.net_power = 0.0
         self.is_scrubber_on = False
+
+        self.power_leak = 0 # W
 
         # self.solar_base_output = 5000 # W (1 AU / Earth distance)
         # self.base_drain = 1200 # W (Life support + essential electronics)
@@ -38,6 +42,8 @@ class ShipSystems:
         self.velocity = 38000.0 / 50 # km/h
         self.orbit_percent = 0.0 # Percentage
         self.AU_KM = 149000000 # km
+
+        self.instability = 1 # normal
 
         # PROP
         self.dry_mass = 17400.0 # kg
@@ -62,14 +68,16 @@ class ShipSystems:
 
     def update_eclss(self, delta_time, crew_count=4):
         """Simulates O2 consumption and CO2 buildup + scrubbing."""
-        consumption = 0.001 * crew_count * delta_time
-        self.oxygen_tank = max(0, self.oxygen_tank - consumption)
+        base_consumption = 0.001 * crew_count * delta_time
+        current_consumption = base_consumption * self.oxygen_leak_rate
+
+        self.oxygen_tank = max(0, self.oxygen_tank - current_consumption)
 
         # if tank is empty, cabin air begins to drop
         if self.oxygen_tank <= 0:
-            self.oxygen = max(0, self.oxygen - (consumption * 0.1))
+            self.oxygen = max(0, self.oxygen - (current_consumption * 0.1))
 
-        self.co2 += (consumption * 2000)
+        self.co2 += (base_consumption * 2000)
 
         # Scrubber removes CO2
         if self.co2 > 1000 and not self.is_scrubber_on:
@@ -107,6 +115,9 @@ class ShipSystems:
         if self.is_scrubber_on:
             current_drain += 500
 
+        if self.power_leak:
+            current_drain += self.power_leak
+
         self.total_drain = current_drain
 
         self.net_power = solar_input - current_drain
@@ -121,12 +132,12 @@ class ShipSystems:
     def update_gnc(self, delta_time):
         """Simulates real rotation and distance progress."""
         # sensor noise for rotation and velocity
-        self.pitch += random.uniform(-0.02, 0.02)
+        self.pitch += random.uniform(-0.02, 0.02) * self.instability * delta_time
         self.yaw += random.uniform(-0.02, 0.02)
         self.roll += random.uniform(-0.02, 0.02)
         self.velocity += random.uniform(-0.02, 0.02)
-        self.y += random.uniform(-0.01, 0.01)
-        self.z += random.uniform(-0.01, 0.01)
+        self.y += random.uniform(-0.01, 0.01) * self.instability * delta_time
+        self.z += random.uniform(-0.01, 0.01) * self.instability * delta_time
 
         # distance progress
         self.distance_traveled += (self.velocity * (delta_time / 3600))
@@ -192,6 +203,18 @@ class ShipSystems:
                 self.add_log("PROP", "Fuel exhausted. Engine cutoff.")
         
         else: self.is_engine_on = False # if out of fuel
+
+
+    def trigger_event(self, event_type):
+        if event_type == 'o2_leak':
+            self.oxygen_leak_rate = 5
+            self.add_log("ECLSS", "CRITICAL Primary O2 supply pressure drop.")
+        elif event_type == 'power_drain':
+            self.power_leak = 800
+            self.add_log("EPS", "CRITICAL Unidentified ground fault detected.")
+        elif event_type == 'gnc_drift':
+            self.instability = 500
+            self.add_log("GNC", "CRITICAL Inertial Measurement Unit failure.")
 
 
     def add_log(self, source, message):
@@ -293,6 +316,10 @@ class ShipSystems:
             self.__init__()
             self.add_log("SYS", "Hard reset complete. All systems nominal.")
             return True
+        
+        if cmd.startswith('/event '):
+            event_name = cmd.split(" ")[1]
+            self.trigger_event(event_name)
 
         return False
 

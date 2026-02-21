@@ -134,9 +134,9 @@ function App() {
               Life Support
             </h2>
             <div className="flex flex-col gap-1 p-2 items-end">
-              <LifeSupport label="Oxygen" percent={telemetry.eclss.oxygen_tank} unit="%" />
-              <LifeSupport label="CO2 Concentration" percent={telemetry.eclss.co2} unit="ppm" />
-              <LifeSupport label="Cabin Pressure" percent={telemetry.eclss.pressure} unit="psi" />
+              <LifeSupport label="Oxygen" percent={telemetry.eclss.oxygen_tank} unit="%" max={100} />
+              <LifeSupport label="CO2 Concentration" percent={telemetry.eclss.co2} unit="ppm" max={2000} />
+              <LifeSupport label="Cabin Pressure" percent={telemetry.eclss.pressure} unit="psi" max={100} />
             </div>
         </div>
 

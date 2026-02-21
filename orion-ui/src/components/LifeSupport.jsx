@@ -1,8 +1,8 @@
 
-export default function LifeSupport({label, percent, unit}){
+export default function LifeSupport({label, percent, unit, max}){
     const radius = 45
     const circumference = 2 * Math.PI * radius
-    const offset = circumference - (percent / 100) * circumference
+    const offset = circumference - (percent / max) * circumference
     return(
          <div className="relative flex flex-col items-center gap-2 bg-orion-void/5 backdrop-blur-sm p-2 rounded">
             <div className="relative w-28 h-28 flex">
