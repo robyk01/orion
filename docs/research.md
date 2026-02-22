@@ -30,4 +30,12 @@ The model succesfully detected a 1.0 second race condition in the simulation's t
 ### Third Attempt
 ![Third attempt](plots/3_clean.png)
 
-The model maintained a consistent False Positive rate of approx. 1.04%. Analysis indicates that this represents the mathematical floor of Isolation Forest when the `contamination` is fixed at 0.01.
+The model maintained a consistent False Positive rate of approx. 1.04%. Analysis indicates that this represents the mathematical floor of Isolation Forest when the `contamination` is fixed at 0.01.x
+
+### Oxygen Degradation Detection
+**Hypothesis**: An unsupervised Isolation Forest can detect linear O2 decline before deterministic alarms fire.
+
+**Method**: Model trained on 10 minutes of nominal flight. Tested on a 1.0/sec leak rate triggered at T=429
+
+**Result**: 
+- AI Alarm: Triggered at T
