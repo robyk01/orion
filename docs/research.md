@@ -13,7 +13,7 @@ Here we use `model.decision_function(X)` to get values between -0.5 and 0.5 inst
 If the oxygen levels on the ship are rapidly decreasing, the predictions (model.fit_predict) might still say 1 (not anomaly) because they didn't hit that 5% threshold yet. However, looking at the scores we can see that the values are dropping towards zero and that can raise an alert before tripping the actual oxygen leaking alarm.
 
 ### First Attempt
-![First attempt](plots/first.png)
+![First attempt](plots/1_clean.png)
 
 As we can see, even though the model was trained on clean data (no malfunctions) negative scores were still present. My guess is that the contamination rate was too high for this specific dataset. In the first 100s I think the model was getting used to the pitch noise and other variables, at 330s it found some discrepancy between CO2 scrubber activation and total power draining. False Positive Rate: 1.15%
 
@@ -22,12 +22,12 @@ I will add more features to the training (`is_scrubber_on`, `is_engine_on`) so t
 This run will have around 10 minutes of clean data. The first 5 minutes the engine will be on, then I'll turn it off. I also added a counter for the false positives (a false positive is when the model says -1 but the truth is 0) - `false_positives = df[(df['anomaly_pred'] == -1) & (df['is_anomaly'] == 0)]`
 
 ### Second Attempt
-![Second attempt](plots/second.png)
+![Second attempt](plots/2_clean.png)
 
 The model succesfully detected a 1.0 second race condition in the simulation's telemetry pipeline. At T=652s, the propulsion state updated before the power system did, creating an anomality that the Isolation Forest identified despite individual sensors remining within nominal bounds. False Positive counters: 11 and False Positive Rate: 1.07%
 
 
 ### Third Attempt
-![Third attempt](plots/third.png)
+![Third attempt](plots/3_clean.png)
 
 The model maintained a consistent False Positive rate of approx. 1.04%. Analysis indicates that this represents the mathematical floor of Isolation Forest when the `contamination` is fixed at 0.01.
