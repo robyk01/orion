@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # first load the data
 train_df = pd.read_csv("../datasets/3_clean.csv")
-test_df = pd.read_csv("../datasets/gnc_drift.csv")
+test_df = pd.read_csv("../datasets/o2_leak.csv")
 
 # then select the features
 features = ["pitch", "y_pos", "z_pos", "o2_level", "co2_level", "total_drain", "solar_input", "is_scrubber_on", "is_engine_on"]
