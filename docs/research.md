@@ -37,5 +37,7 @@ The model maintained a consistent False Positive rate of approx. 1.04%. Analysis
 
 **Method**: Model trained on 10 minutes of nominal flight. Tested on a 1.0/sec leak rate triggered at T=429
 
-**Result**: 
-- AI Alarm: Triggered at T
+**Result**: During the O2 leak test, the model recorded a False Positive rate of 29%. I suspect that these flags are primary triggered by the GNC oscillations exceeding the training set's variance. I will try to implement a Standard Scaler to make the AI look at the Standard Deviation rather than raw data.
+
+It seems like a single Isolation Forest can't see everything around the ship. The model works by splitting data and if I mix ship rotation and attitude data with o2 level, a steep pitch can be considered an anomaly in the Life Support system. 
+For the next iteration I will use only features that are included in the ECLSS system (O2 level, CO2, scrubber) and try to create specialized models for each system (ECLSS, EPS and GNC).
