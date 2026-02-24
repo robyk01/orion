@@ -28,7 +28,8 @@ class ShipSystems:
         self.total_drain = 0.0 # kW
         self.net_power = 0.0
 
-        self.power_leak = 0 # W
+        self.is_power_leaking = False
+        self.power_leak = 1.0 # default
 
         # self.solar_base_output = 5000 # W (1 AU / Earth distance)
         # self.base_drain = 1200 # W (Life support + essential electronics)
@@ -105,7 +106,11 @@ class ShipSystems:
         # calc efficiency based on the angle of incidence relative to the sun
         peak_power = 2.8
 
-        efficiency = max(0, math.cos(math.radians(self.pitch - 141)))
+        if self.is_power_leaking:
+            self.power_leak -= 0.0005 * delta_time
+            self.power_leak = max(0.5, self.power_leak)
+
+        efficiency = max(0, math.cos(math.radians(self.pitch - 141))) * self.power_leak
 
         self.solar_wings = [peak_power * efficiency for _ in self.solar_wings]
 
@@ -120,8 +125,6 @@ class ShipSystems:
         if self.is_scrubber_on:
             current_drain += 500
 
-        if self.power_leak:
-            current_drain += self.power_leak
 
         self.total_drain = current_drain
 
@@ -225,14 +228,15 @@ class ShipSystems:
             self.oxygen_leak_rate = 5
             self.add_log("ECLSS", "CRITICAL Primary O2 supply pressure drop.")
         elif event_type == 'power_leak':
-            self.power_leak = 800
+            self.power_leak = 0.9
+            self.is_power_leaking = True
             self.add_log("EPS", "CRITICAL Unidentified ground fault detected.")
         elif event_type == 'gnc_drift':
             self.instability = 500
             self.add_log("GNC", "CRITICAL Inertial Measurement Unit failure.")
         elif event_type == 'fix':
             self.oxygen_leak_rate = 1
-            self.power_leak = 0
+            self.power_leak = 1.0
             self.instability = 0
             self.add_log("SYS", "All leaks fixed.")
 

@@ -17,7 +17,7 @@ export default function IntelWindow({onToggleIntel, data }){
 
             if (data.eps.total_drain > threshold) {
                 issues.push("CRITICAL: Power leakage.");
-}
+            }
 
             if (issues.length > 0) level = 'RED';
             else {
