@@ -63,3 +63,9 @@ The Isolation Forest (trained on 4 features: o2_level, o2_velocity, co2_level, i
 
 #### Conclusion
 While a hard-coded if/else rule on velocity would detect this event at T=421, the AI model serves as a secondary safety layer. It ignore noisy velocity spikes but triggers a high-confidence alarm once the system states becomes physically unsustainable.
+
+
+### Power Leak Detection
+**Hypothesis**: An unsupervised Isolation Forest can detect linear power leakage before deterministic alarms fire.
+
+**Method**: Model trained on 10 minutes of nominal flight. Tested on a 1.0/sec leak rate triggered at T=577

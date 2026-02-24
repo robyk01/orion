@@ -264,7 +264,7 @@ class ShipSystems:
             "solar_input": sum(self.solar_wings) * 1000,
             "is_scrubber_on": 1 if self.is_scrubber_on else 0,
             "is_engine_on": 1 if self.is_engine_on else 0,
-            "is_anomaly": 1 if (self.oxygen_leak_rate > 1 or self.power_leak > 0 or self.instability > 0) else 0
+            "is_anomaly": 1 if (self.oxygen_leak_rate > 1 or self.power_leak < 1 or self.instability > 0) else 0
         }
 
         file_exists = os.path.isfile(filename)
