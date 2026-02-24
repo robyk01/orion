@@ -1,5 +1,5 @@
 ## **Orion Artemis II Mission Control Dashboard & Spacecraft Systems Simulator**
-A high-fidelity mission control and systems simulator for the Orion spacecraft, modeled after the Artemis II mission profile. This platform serves as a research environment for Autonomous Mission Operations (AMO) and AI-assisted system diagnostics in deep-space environments.
+A high-fidelity mission control and systems simulator for the Orion spacecraft, modeled after the Artemis II mission profile. This platform serves as a research environment for AI-assisted system diagnostics in deep-space environments.
 
 ### Resources
 - [NASA Systems Engineering Handbook](https://www.isibang.ac.in/~library/onlinerz/resources/NASAengineeringhandbookpdf.pdf)
