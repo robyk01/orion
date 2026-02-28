@@ -68,4 +68,26 @@ While a hard-coded if/else rule on velocity would detect this event at T=421, th
 ### Power Leak Detection
 **Hypothesis**: An unsupervised Isolation Forest can detect linear power leakage before deterministic alarms fire.
 
+#### First Attempt
 **Method**: Model trained on 10 minutes of nominal flight. Tested on a 1.0/sec leak rate triggered at T=577
+
+Unfortunately, the model flagged 70% of the healthy flight as an anomaly. Looking at the data, I found a difference between test and training data. Because the simulation was low noise, the tiny shifts in the pitch caused small drops in solar input. Even though the ship was healthy, for the model this change produced a high false positive rate.
+
+#### Second Attempt
+**Method**: Switched to a Chronological Split. Instead of using separate files, I trained the model on the first 300 seconds of the actual mission to ensure the AI understood the environment context of that flight.
+
+Even by splitting the data I got false positives spikes at T=246 and T=322. It might be because of the stable sensors and tight decision boundaries. Any minor jitter was still being isolated as a failure.
+
+#### Third Attempt
+**Method**: I implemented Data Augmentation by injecting 5 std Jitter into the training's data solar input and pitch features.
+
+This measure forces the model to ignore decimal-point fluctuations and focus only on significant trends. Results can be seen here: [Leak Detection Time](../orion-core/simulation/eps_model.ipynb#leak-detection-time)
+
+| Metric | Value | Observation |
+| --- | --- | --- |
+| Ground Truth Start | T=577 | Leak initiation. | 
+| First Model Flag | T=646 | Score dropped below -0.03.|
+| Detection Latency | 69 seconds | The period where the leak was active but unflagged.|
+
+#### Conclusion
+This 69 second lead time represents a critical window for Mission Control to perform fault isolation or re-orient the spacecraft toward the sun before battery depletion.
